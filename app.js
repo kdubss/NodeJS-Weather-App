@@ -17,4 +17,10 @@ const argv = yargs
 
 const inputAddress = argv.a;
 
-geocode.geocodeAddress(inputAddress);
+geocode.geocodeAddress(inputAddress, (err, res) => {
+  if (err) {
+    console.log('\nThere are errors in your request!\n', err, '\n');
+  } else {
+    console.log(JSON.stringify(res, undefined, 2));
+  }
+});
