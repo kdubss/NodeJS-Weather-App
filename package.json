@@ -9,6 +9,7 @@
   "author": "Kang Wang",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "yargs": "^4.8.1"
   }
 }
