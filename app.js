@@ -30,9 +30,14 @@ const lat = 49.2624389;
 const lon = -123.1665417;
 
 weather.getWeather(lat, lon, (err, res) => {
+  // The callback function will get fired when the 'res' data is returned from
+  // the forecast.io API!
   if (err) {
     console.log('\nThere are errors in your current request!\n', err, '\n');
   } else {
+    console.log(`\nWeather summary for ${inputAddress}`);
+    console.log('----');
     console.log(JSON.stringify(res, undefined, 2));
+    console.log('----\n');
   }
 });
