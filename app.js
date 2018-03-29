@@ -18,26 +18,26 @@ const argv = yargs
 
 const inputAddress = argv.a;
 
-// geocode.geocodeAddress(inputAddress, (err, res) => {
-//   if (err) {
-//     console.log('\nThere are errors in your request!\n', err, '\n');
-//   } else {
-//     console.log(JSON.stringify(res, undefined, 2));
-//   }
-// });
+geocode.geocodeAddress(inputAddress, (err, geoRes) => {
 
-const lat = 49.2624389;
-const lon = -123.1665417;
-
-weather.getWeather(lat, lon, (err, res) => {
-  // The callback function will get fired when the 'res' data is returned from
-  // the forecast.io API!
   if (err) {
-    console.log('\nThere are errors in your current request!\n', err, '\n');
+    console.log('\nThere are errors in your request!\n', err, '\n');
   } else {
-    console.log(`\nWeather summary for ${inputAddress}`);
-    console.log('----');
-    console.log(JSON.stringify(res, undefined, 2));
-    console.log('----\n');
+    console.log(`\n${geoRes.address}`);
+    weather.getWeather(geoRes.latitude, geoRes.longitude, (err, weatherRes) => {
+      // The callback function will get fired when the 'res' data is returned from
+      // the forecast.io API!
+      if (err) {
+        console.log('\nThere are errors in your current request!\n', err, '\n');
+      } else {
+        console.log(`\nWeather summary for ${inputAddress}`);
+        console.log(`  - It\'s currently ${weatherRes.temperature_degC} but feels like ${weatherRes.feels_like_degC}`);
+        console.log(`  - The current condition is ${weatherRes.summary}\n`);
+        console.log('----');
+        console.log(JSON.stringify(weatherRes, undefined, 2));
+        console.log('----\n');
+      }
+    })
   }
+  
 });
