@@ -16,6 +16,8 @@ const getWeather = (lat, lon, callback) => {
   }, (err, res, body) => {
     if (err) {
       callback('\nUnable to connect to the "forecast.io" API!');
+    } else if (res.statusCode === 404) {
+      callback('\nClient errors - recheck the code in your API request!');
     } else if (res.statusCode === 200) {
       callback(undefined, {
         summary: body.currently.summary,
