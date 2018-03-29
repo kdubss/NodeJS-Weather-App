@@ -39,15 +39,16 @@ const farenheitToCelsius = (temperatureInFarenheit) => {
   return tempInCelsius;
 };
 
+// Takes 2 inputs (an options object), and a callback
 request({
   url,
   json: true
 }, (err, res, body) => {
-  if (err) {
-    console.log('\nUnable to connect with DarkSky API!\n');
+  if (!err && res.statusCode === 200) {
+    console.log('\n----');
+    console.log('Current temperature (deg.C) in Vancouver is:', farenheitToCelsius(body.currently.temperature));
+    console.log('----\n');
   } else {
-    // console.log(body);
-    console.log('---');
-    console.log('Current temperature in Vancouver is', body.currently.temperature);
+    console.log('There is an error(s).  Unable to connect with \'forecast.io\' API or 404!\n');
   }
 });
