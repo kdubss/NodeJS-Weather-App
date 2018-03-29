@@ -1,6 +1,8 @@
 const yargs = require('yargs');
 const axios = require('axios');
 
+const weather = require('./weather/weather');
+
 const argv = yargs
   .options({
     a: {
@@ -29,6 +31,16 @@ axios.get(geocodeUrl)
     const lng = response.data.results[0].geometry.location.lng;
     const weatherUrl = `https://api.darksky.net/forecast/87313e54274f92c50b1c5d843d7471dc/${lat},${lng}`
     console.log(response.data.results[0].formatted_address);
+
+    return axios.get(weatherUrl);
+  })
+  // The following .then() gets called when the weather data is returned from the
+  // forecast.io API.
+  .then((response) => {
+    const temperature = weather.farenheitToCelsius(response.data.currently.temperature);
+    const apparentTemperature = weather.farenheitToCelsius(response.data.currently.apparentTemperature);
+
+    console.log(`It's currently ${temperature} deg.C, but it feels like ${apparentTemperature} deg.C`);
   })
   .catch((error) => {
     if (error.code === 'ENOTFOUND') {

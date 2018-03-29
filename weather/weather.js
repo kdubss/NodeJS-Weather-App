@@ -36,3 +36,4 @@ const getWeather = (lat, lon, callback) => {
 };
 
 module.exports.getWeather = getWeather;
+module.exports.farenheitToCelsius = farenheitToCelsius;
