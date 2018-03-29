@@ -30,6 +30,7 @@ geocode.geocodeAddress(inputAddress, (err, geoRes) => {
       if (err) {
         console.log('\nThere are errors in your current request!\n', err, '\n');
       } else {
+        console.log('\nWeather data fetched from \'forecast.io\' (aka darksky.net)');
         console.log(`\nWeather summary for ${inputAddress}`);
         console.log(`  - It\'s currently ${weatherRes.temperature_degC} but feels like ${weatherRes.feels_like_degC}`);
         console.log(`  - The current condition is ${weatherRes.summary}\n`);
@@ -39,5 +40,5 @@ geocode.geocodeAddress(inputAddress, (err, geoRes) => {
       }
     })
   }
-  
+
 });
