@@ -25,7 +25,7 @@ const getWeather = (lat, lon, callback) => {
         temperature_degF: body.currently.temperature,
         feels_like_degC: farenheitToCelsius(body.currently.apparentTemperature),
         feels_like_degF: body.currently.apparentTemperature,
-        rain_probability: body.currently.percipProbability,
+        rain_probability: body.currently.precipProbability,
         barometric_pressure_mb: body.currently.pressure,
         cloud_cover: body.currently.cloudCover,
         wind_speed_kmh: body.currently.windSpeed,
