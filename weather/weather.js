@@ -18,9 +18,16 @@ const getWeather = (lat, lon, callback) => {
       callback('\nUnable to connect to the "forecast.io" API!');
     } else if (res.statusCode === 200) {
       callback(undefined, {
+        summary: body.currently.summary,
         temperature_degC: farenheitToCelsius(body.currently.temperature),
         temperature_degF: body.currently.temperature,
-        
+        feels_like_degC: farenheitToCelsius(body.currently.apparentTemperature),
+        feels_like_degF: body.currently.apparentTemperature,
+        rain_probability: body.currently.percipProbability,
+        barometric_pressure_mb: body.currently.pressure,
+        cloud_cover: body.currently.cloudCover,
+        wind_speed_kmh: body.currently.windSpeed,
+        wind_gusts_kmh: body.currently.windGust
       });
     }
   });
