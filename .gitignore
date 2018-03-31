@@ -1,3 +1,4 @@
 /testing
 *package-lock.json
 /node_modules
+local_settings.py

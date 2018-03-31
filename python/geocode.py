@@ -1,8 +1,10 @@
 # ./weather-app/python/geocode.py
 import requests
+import os
 import pandas as pd
 
 from urllib.parse import quote
+from local_settings import env
 
 address = 'Kitsilano Vancouver'
 
@@ -21,11 +23,17 @@ def getLatLon(inputAddress):
 
     return lat, lon
 
-    
+def getJSONWeatherData(inputAddress):
+    '''
+    Function to retrieve the weather data from using the darksky.net API
+    '''
+    lat, lon = getLatLon(inputAddress)
+    url = 'https://api.darksky.net/forecast/%s/%s,%s' % (env['forecastApiKey'],
+                                                         str(lat), str(lon))
+    r = requests.get(url)
+    return r.json()
 
-# > For Testing:
-# print(googleMapsAPI)
-# print(address)
-# print(encodedInputAddress)
-# print(concatedUrl)
-# print('\nStatus code of request: %i' % r.status_code)
+if __name__ == '__main__':
+
+    address = 'Kitsilano Vancouver'
+    print(getJSONWeatherData(address))
