@@ -19,6 +19,20 @@ def getJSONWeatherData(inputAddress):
     r = requests.get(url)
     return r
 
+def getCelsiusFromFarenheit(temp_farenheit):
+    '''
+    Function to convert temperature from farenheit to celsius.
+    '''
+    temp_celsius = (5/9) * (temp_farenheit - 32)
+    return temp_celsius
+
+def getFarenheitFromCelsius(temp_celsius):
+    '''
+    Function to convert temperature from celsius to farenheit
+    '''
+    temp_farenheit = ((9/5) * temp_celsius) + 32
+    return temp_farenheit
+
 if __name__ == '__main__':
 
     address = 'Kitsilano Vancouver'
@@ -29,3 +43,8 @@ if __name__ == '__main__':
     for ind, each_key in enumerate(json_dict.keys()):
         print(ind + 1, '\t', each_key)
     print('\n')
+
+    # print(json_dict['currently'])
+    # print('\n', json_dict['hourly'])
+    # print('\n', json_dict['hourly']['data'][0])
+    print(len(json_dict['hourly']['data']))
