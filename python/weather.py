@@ -119,15 +119,21 @@ def config1x1PlotLayout():
     for ax in fig.get_axes():
         ax.set_xticklabels([])
         ax.set_yticklabels([])
-    plt.show()
-
+        for each_spine in spines2cut:
+            ax.spines[each_spine].set_visible(False)
+        for ylabel in ax.get_yticklabels():
+            ylabel.set_fontsize(16)
+        for xlabel in ax.get_xticklabels():
+            xlabel.set_fontsize(16)
+            xlabel.set_rotation(20)
 
 def plotHourlyTemperature():
     '''
     Function to visualize hourly-temperature and hourly-apparent-temeperature
     data.
     '''
-    pass
+    config1x1PlotLayout()
+    plt.show()
 
 if __name__ == '__main__':
 
@@ -154,4 +160,4 @@ if __name__ == '__main__':
         json_data = getJSONWeatherData(address)
         json_dict = json_data.json()
 
-        config1x1PlotLayout()
+        plotHourlyTemperature()
