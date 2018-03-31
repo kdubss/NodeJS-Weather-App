@@ -5,7 +5,10 @@ make data manipulaions by using Pandas.
 '''
 import requests
 import time
+import argparse as arg
 import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 from local_settings import env
 from geocode import getLatLon
@@ -56,6 +59,44 @@ def formatHourlyWeatherDictFromJSON(json_weather_dict):
 
     return fmttd_weather_dict
 
+def getHourlyWeatherData(weather_json_dict):
+    '''
+    Function to parse out the hourly weather data from the JSON object returned from
+    the call to the forecast.io API request (object returned as an object).
+    '''
+    hourly_data = weather_json_dict['hourly']['data']
+    return hourly_data
+
+def getHourlyTemperature(weather_json_dict):
+    '''
+    Function to get and parse the 'temperature' parameter from the
+    formatted JSON dictionary (JSON object returned from the API request to forecast.io).
+    '''
+    hourly_data = getHourlyWeatherData(weather_json_dict)
+    TT_timestamp_series_list = []
+    TT_data_series_list = []
+    for each_hrs_data in hourly_data:
+        TT_timestamp_series_list.append(convertUnixTime2PST(each_hrs_data['time']))
+        TT_data_series_list.append(each_hrs_data['temperature'])
+    TT_series = pd.Series(TT_data_series_list, index = TT_timestamp_series_list,
+                          name = 'Hourly Temperature Series')
+    return TT_series
+
+def getHourlyApparentTemperature(weather_json_dict):
+    '''
+    Function to get and parse the 'apparentTemperature' parameter from the
+    formatted JSON dictionary (JSON object returned from the API request to forecast.io).
+    '''
+    hourly_data = getHourlyWeatherData(weather_json_dict)
+    TT_timestamp_series_list = []
+    TT_data_series_list = []
+    for each_hrs_data in hourly_data:
+        TT_timestamp_series_list.append(convertUnixTime2PST(each_hrs_data['time']))
+        TT_data_series_list.append(each_hrs_data['apparentTemperature'])
+    TT_series = pd.Series(TT_data_series_list, index = TT_timestamp_series_list,
+                          name = 'Hourly Apparent Temperature Series')
+    return TT_series
+
 if __name__ == '__main__':
 
     address = 'Kitsilano Vancouver'
@@ -70,4 +111,7 @@ if __name__ == '__main__':
     # print(json_dict['currently'])
     # print('\n', json_dict['hourly'])
     # print('\n', json_dict['hourly']['data'][0])
-    print(len(json_dict['hourly']['data']))
+    print(len(json_dict['hourly']['data']), '\n')
+
+    print(getHourlyTemperature(json_dict), '\n')
+    print(getHourlyApparentTemperature(json_dict), '\n')

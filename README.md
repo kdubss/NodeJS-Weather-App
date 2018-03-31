@@ -6,7 +6,8 @@
 
   *The* ***goal*** *of this project is to ultimately use `React.js` to create the font-end of an on-line app where* ***current***, ***hourly***, *and* ***minutely*** *weather data will be displayed, both visually as time-series figures and as data tables, depending on the input-address from the user.  Visual representation will be presented by using `D3.js`; Back-end will be powered by `Node.js`; Data fetching, parsing, and manipulations will be done so using `Python/Pandas`*.
 
-### Data Parameters (found at *[forecast.io](https://darksky.net)*) - Hourly Data:
+### Data Parameters (found at *[forecast.io](https://darksky.net)*) - Hourly Data
+(for full details on request response formats, see [here](https://darksky.net/dev/docs#response-format))
 
   - `apparentTemperature`: 'feels like' temp in Farenheit
   - `cloudCover`: percentage of sky occluded by clouds, between 0 and 1, inclusive.
