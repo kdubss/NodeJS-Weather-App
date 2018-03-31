@@ -59,7 +59,6 @@ def formatHourlyWeatherDictFromJSON(json_weather_dict):
         fmttd_weather_dict[convertUnixTime2PST(json_weather_dict['hourly']['data']\
                                                [each_hr]['time'])] = \
                            json_weather_dict['hourly']['data'][each_hr]
-
     return fmttd_weather_dict
 
 def getHourlyWeatherData(weather_json_dict):
@@ -108,6 +107,28 @@ def getHourlyApparentTemperature(weather_json_dict):
     aTT = getDataSeries(hourly_data, data_param, series_name)
     return aTT
 
+def config1x1PlotLayout():
+    '''
+    Convenience function to configure the plot layout of single 1x1 plot layouts.
+    '''
+    plt.rc('font', family = 'serif')
+    spines2cut = ['top', 'right']
+    fig = plt.figure()
+    fig.set_figwidth(15)
+    fig.set_figheight(12)
+    for ax in fig.get_axes():
+        ax.set_xticklabels([])
+        ax.set_yticklabels([])
+    plt.show()
+
+
+def plotHourlyTemperature():
+    '''
+    Function to visualize hourly-temperature and hourly-apparent-temeperature
+    data.
+    '''
+    pass
+
 if __name__ == '__main__':
 
     parser = ag.ArgumentParser(
@@ -119,17 +140,18 @@ if __name__ == '__main__':
         type = str,
         help = 'Address to fetch weather data for'
     )
+    parser.add_argument(
+        '-p',
+        action = 'store_true',
+        default = False,
+        help = 'Boolean flag to trigger weather or not to plot the \
+        hourly temperature / apparent-temperature data'
+    )
     args = parser.parse_args()
 
-    if args.a == 'Vancouver':
+    if args.a == 'Vancouver' and args.p:
         address = 'Kitsilano Vancouver'
         json_data = getJSONWeatherData(address)
         json_dict = json_data.json()
 
-        print('\nKeys in \'json_data\' dict object:\n')
-        for ind, each_key in enumerate(json_dict.keys()):
-            print(ind + 1, '\t', each_key)
-        print('\n')
-
-        print(getHourlyTemperature(json_dict), '\n')
-        print(getHourlyApparentTemperature(json_dict))
+        config1x1PlotLayout()
