@@ -6,7 +6,7 @@ make data manipulaions by using Pandas.
 '''
 import requests
 import time
-import argparse as arg
+import argparse as ag
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -110,14 +110,26 @@ def getHourlyApparentTemperature(weather_json_dict):
 
 if __name__ == '__main__':
 
-    address = 'Kitsilano Vancouver'
-    json_data = getJSONWeatherData(address)
-    json_dict = json_data.json()
+    parser = ag.ArgumentParser(
+        description = 'Module to parse and visualize weather data from forecast.io'
+    )
+    parser.add_argument(
+        '-a',
+        action = 'store',
+        type = str,
+        help = 'Address to fetch weather data for'
+    )
+    args = parser.parse_args()
 
-    print('\nKeys in \'json_data\' dict object:\n')
-    for ind, each_key in enumerate(json_dict.keys()):
-        print(ind + 1, '\t', each_key)
-    print('\n')
+    if args.a == 'Vancouver':
+        address = 'Kitsilano Vancouver'
+        json_data = getJSONWeatherData(address)
+        json_dict = json_data.json()
 
-    print(getHourlyTemperature(json_dict), '\n')
-    print(getHourlyApparentTemperature(json_dict))
+        print('\nKeys in \'json_data\' dict object:\n')
+        for ind, each_key in enumerate(json_dict.keys()):
+            print(ind + 1, '\t', each_key)
+        print('\n')
+
+        print(getHourlyTemperature(json_dict), '\n')
+        print(getHourlyApparentTemperature(json_dict))
