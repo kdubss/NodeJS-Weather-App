@@ -3,3 +3,4 @@
 /node_modules
 local_settings.py
 /csv-files
+*.ropeproject
