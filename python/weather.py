@@ -145,6 +145,7 @@ def config1x1PlotLayout():
     fig = plt.figure()
     fig.set_figwidth(15)
     fig.set_figheight(12)
+    ax = fig.add_subplot(111)
     for ax in fig.get_axes():
         ax.set_xticklabels([])
         ax.set_yticklabels([])
@@ -161,11 +162,12 @@ def plotHourlyTemperature(hourly_TT_data_series):
     Function to visualize hourly-temperature and hourly-apparent-temeperature
     data.
     '''
-    save_fig_title = 'test'
-    save_fig_fmt = '.svg'
-    save_fig_path = 'figs/'
-    plt.plot(hourly_TT_data_series)
-    plt.savefig(save_fig_title + '.png')
+    config1x1PlotLayout()
+    plt.show()
+
+    # save_fig_title = 'test'
+    # save_fig_fmt = '.svg'
+    # save_fig_path = 'figs/'
 
 def saveWeatherData2Csv(save_2_path):
     '''
@@ -202,12 +204,4 @@ if __name__ == '__main__':
         TT = getHourlyTemperature(json_dict)
         TT_apparent = getHourlyApparentTemperature(json_dict)
 
-        fig = plt.figure()
-        axs = fig.add_subplot(111)
-        for ylabel in axs.get_yticklabels():
-            ylabel.set_fontsize(16)
-        for xlabel in axs.get_xticklabels():
-            xlabel.set_fontsize(16)
-            xlabel.set_rotation(20)
-        axs.plot(TT)
-        plt.show()
+        plotHourlyTemperature(TT)
