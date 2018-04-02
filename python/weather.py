@@ -87,14 +87,14 @@ def getDailyWeatherData(weather_json_dict):
     daily_data = weather_json_dict['daily']
     return daily_data
 
-def getDataSeries(weather_json_dict_dict, data_param, series_name):
+def getDataSeries(weather_json_dict, data_param, series_name):
     '''
     Function to parse out and prepare the weather data into a
     pandas.core.series.Series object with weather data as the values
     and formatted (i.e. human-readable) dates as the series indices.
     '''
     timestamp_series_list, data_series_list = [], []
-    for each_data in weather_json_dict_dict:
+    for each_data in weather_json_dict:
         timestamp_series_list.append(convertUnixTime2PST(each_data['time']))
         data_series_list.append(each_data[data_param])
     data_series = pd.Series(data_series_list, index = timestamp_series_list,
@@ -113,13 +113,24 @@ def getHourlyTemperature(weather_json_dict):
     TT = getDataSeries(hourly_data, data_param, series_name)
     return TT
 
+def getDailyTemperature(weather_json_dict):
+    '''
+    Function to get and parse the 'temperature' parameter from the formatted
+    JSON dictionary(JSON object returne from the API request to forecast.io).
+    '''
+    daily_data = getDailyWeatherData(weather_json_dict)
+    data_param = 'temperature'
+    series_name = 'Daily temperature data'
+    TT = getDataSeries(daily_data, data_param, series_name)
+    return TT
+
 def getHourlyApparentTemperature(weather_json_dict):
     '''
     Function to get and parse the 'apparentTemperature' parameter from the
     formatted JSON dictionary (JSON object returned from the API request to
     forecast.io).
     '''
-    hourly_data = getHourlyWeatherData(weather_json_dict_dict)
+    hourly_data = getHourlyWeatherData(weather_json_dict)
     data_param = 'apparentTemperature'
     series_name = 'Hourly apparent temperature'
     aTT = getDataSeries(hourly_data, data_param, series_name)
@@ -150,11 +161,11 @@ def plotHourlyTemperature(hourly_TT_data_series):
     Function to visualize hourly-temperature and hourly-apparent-temeperature
     data.
     '''
-    save_fig_title = 'hourly_temperature_data'
+    save_fig_title = 'test'
     save_fig_fmt = '.svg'
-    save_fig_path = './figs/'
+    save_fig_path = 'figs/'
     plt.plot(hourly_TT_data_series)
-    plt.savefig(save_fig_path + savefig_title + save_fig_fmt)
+    plt.savefig(save_fig_title + '.png')
 
 def saveWeatherData2Csv(save_2_path):
     '''
@@ -191,4 +202,12 @@ if __name__ == '__main__':
         TT = getHourlyTemperature(json_dict)
         TT_apparent = getHourlyApparentTemperature(json_dict)
 
-        plotHourlyTemperature(TT)
+        fig = plt.figure()
+        axs = fig.add_subplot(111)
+        for ylabel in axs.get_yticklabels():
+            ylabel.set_fontsize(16)
+        for xlabel in axs.get_xticklabels():
+            xlabel.set_fontsize(16)
+            xlabel.set_rotation(20)
+        axs.plot(TT)
+        plt.show()
