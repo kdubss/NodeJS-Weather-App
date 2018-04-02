@@ -61,13 +61,21 @@ def formatHourlyWeatherDictFromJSON(json_weather_dict):
                            json_weather_dict['hourly']['data'][each_hr]
     return fmttd_weather_dict
 
-def getHourlyWeatherData(weather_json_dict):
+def getHourlyWeatherData(weather_json):
     '''
     Function to parse out the hourly weather data from the JSON object returned
     from the call to the forecast.io API request (object returned as an object).
     '''
-    hourly_data = weather_json_dict['hourly']['data']
+    hourly_data = weather_json['hourly']['data']
     return hourly_data
+
+def getDailyWeatherData(weather_json):
+    '''
+    Function to get the daily weather data from the JSON object returned
+    from the API request (to Darksky.net).
+    '''
+    daily_data = weather_json['daily']
+    return daily_data
 
 def getDataSeries(weather_json_dict, data_param, series_name):
     '''
@@ -83,25 +91,25 @@ def getDataSeries(weather_json_dict, data_param, series_name):
                             name = series_name)
     return data_series
 
-def getHourlyTemperature(weather_json_dict):
+def getHourlyTemperature(weather_json):
     '''
     Function to get and parse the 'temperature' parameter from the
     formatted JSON dictionary (JSON object returned from the API request to
     forecast.io).
     '''
-    hourly_data = getHourlyWeatherData(weather_json_dict)
+    hourly_data = getHourlyWeatherData(weather_json)
     data_param = 'temperature'
     series_name = 'Hourly temperature data'
     TT = getDataSeries(hourly_data, data_param, series_name)
     return TT
 
-def getHourlyApparentTemperature(weather_json_dict):
+def getHourlyApparentTemperature(weather_json):
     '''
     Function to get and parse the 'apparentTemperature' parameter from the
     formatted JSON dictionary (JSON object returned from the API request to
     forecast.io).
     '''
-    hourly_data = getHourlyWeatherData(weather_json_dict)
+    hourly_data = getHourlyWeatherData(weather_json)
     data_param = 'apparentTemperature'
     series_name = 'Hourly apparent temperature'
     aTT = getDataSeries(hourly_data, data_param, series_name)
@@ -127,13 +135,23 @@ def config1x1PlotLayout():
             xlabel.set_fontsize(16)
             xlabel.set_rotation(20)
 
-def plotHourlyTemperature():
+def plotHourlyTemperature(hourly_TT_data_series):
     '''
     Function to visualize hourly-temperature and hourly-apparent-temeperature
     data.
     '''
-    config1x1PlotLayout()
-    plt.show()
+    save_fig_title = 'hourly_temperature_data'
+    save_fig_fmt = '.svg'
+    save_fig_path = './figs/'
+    plt.plot(hourly_TT_data_series)
+    plt.savefig(save_fig_path + savefig_title + save_fig_fmt)
+
+def saveWeatherData2Csv(save_2_path):
+    '''
+    Function to save the parsed weather data-series to a directory defined by
+    'save_2_path'.
+    '''
+    pass
 
 if __name__ == '__main__':
 
@@ -160,4 +178,7 @@ if __name__ == '__main__':
         json_data = getJSONWeatherData(address)
         json_dict = json_data.json()
 
-        plotHourlyTemperature()
+        TT = getHourlyTemperature(json_dict)
+        TT_apparent = getHourlyApparentTemperature(json_dict)
+
+        plotHourlyTemperature(TT)
