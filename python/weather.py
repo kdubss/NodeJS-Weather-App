@@ -61,55 +61,65 @@ def formatHourlyWeatherDictFromJSON(json_weather_dict):
                            json_weather_dict['hourly']['data'][each_hr]
     return fmttd_weather_dict
 
-def getHourlyWeatherData(weather_json):
+def getHourlyWeatherData(weather_json_dict):
     '''
     Function to parse out the hourly weather data from the JSON object returned
-    from the call to the forecast.io API request (object returned as an object).
+    from the call to the forecast.io API request (object returned as a response,
+    which has a json() key with associated data values).
     '''
-    hourly_data = weather_json['hourly']['data']
+    hourly_data = weather_json_dict['hourly']['data']
     return hourly_data
 
-def getDailyWeatherData(weather_json):
+def getMinutelyWeatherData(weather_json_dict):
+    '''
+    Function to parse out the minutely weather data from the JSON object returned
+    from the call to the forecast.io API request (object returned as a response,
+    which has a json() key with associated data values)
+    '''
+    minutely_data = weather_json_dict['minutely']['data']
+    return minutely_data
+
+def getDailyWeatherData(weather_json_dict):
     '''
     Function to get the daily weather data from the JSON object returned
     from the API request (to Darksky.net).
     '''
-    daily_data = weather_json['daily']
+    daily_data = weather_json_dict['daily']
     return daily_data
 
-def getDataSeries(weather_json_dict, data_param, series_name):
+def getDataSeries(weather_json_dict_dict, data_param, series_name):
     '''
     Function to parse out and prepare the weather data into a
     pandas.core.series.Series object with weather data as the values
     and formatted (i.e. human-readable) dates as the series indices.
     '''
     timestamp_series_list, data_series_list = [], []
-    for each_data in weather_json_dict:
+    for each_data in weather_json_dict_dict:
         timestamp_series_list.append(convertUnixTime2PST(each_data['time']))
         data_series_list.append(each_data[data_param])
     data_series = pd.Series(data_series_list, index = timestamp_series_list,
                             name = series_name)
     return data_series
 
-def getHourlyTemperature(weather_json):
+def getHourlyTemperature(weather_json_dict):
     '''
     Function to get and parse the 'temperature' parameter from the
     formatted JSON dictionary (JSON object returned from the API request to
     forecast.io).
     '''
-    hourly_data = getHourlyWeatherData(weather_json)
+    hourly_data = getHourlyWeatherData(weather_json_dict)
     data_param = 'temperature'
     series_name = 'Hourly temperature data'
     TT = getDataSeries(hourly_data, data_param, series_name)
     return TT
 
-def getHourlyApparentTemperature(weather_json):
+def getHourlyApparentTemperature(weather_json_dict):
     '''
     Function to get and parse the 'apparentTemperature' parameter from the
     formatted JSON dictionary (JSON object returned from the API request to
     forecast.io).
     '''
-    hourly_data = getHourlyWeatherData(weather_json)
+    hourly_data = getHourlyWeatherData(weather_json_dict_dict)
     data_param = 'apparentTemperature'
     series_name = 'Hourly apparent temperature'
     aTT = getDataSeries(hourly_data, data_param, series_name)
