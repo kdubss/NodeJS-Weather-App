@@ -79,15 +79,7 @@ def getMinutelyWeatherData(weather_json_dict):
     minutely_data = weather_json_dict['minutely']['data']
     return minutely_data
 
-def getDailyWeatherData(weather_json_dict):
-    '''
-    Function to get the daily weather data from the JSON object returned
-    from the API request (to Darksky.net).
-    '''
-    daily_data = weather_json_dict['daily']
-    return daily_data
-
-def getDataSeries(weather_json_dict, data_param, series_name):
+def getHourlyDataSeries(weather_json_dict, data_param, series_name):
     '''
     Function to parse out and prepare the weather data into a
     pandas.core.series.Series object with weather data as the values
@@ -110,18 +102,34 @@ def getHourlyTemperature(weather_json_dict):
     hourly_data = getHourlyWeatherData(weather_json_dict)
     data_param = 'temperature'
     series_name = 'Hourly temperature data'
-    TT = getDataSeries(hourly_data, data_param, series_name)
+    TT = getHourlyDataSeries(hourly_data, data_param, series_name)
     return TT
 
-def getDailyTemperature(weather_json_dict):
+def getDailyWeatherData(weather_json_dict):
+    '''
+    Function to get the daily weather data from the JSON object returned
+    from the API request (to Darksky.net).
+    '''
+    daily_data = weather_json_dict['daily']
+    return daily_data
+
+def getDailyMinMaxDataSeries(weather_json_dict):
+    '''
+    Function to parse out and prepare the Daily Min. & Max. weather data into a
+    pandas.core.series.Series object with weather data as the values
+    and formatted (i.e. human-readable) dates as the series indices.
+    '''
+    daily_data = getDailyWeatherData(weather_json_dict)
+    time
+
+def getDailyMinMaxTemperature(weather_json_dict):
     '''
     Function to get and parse the 'temperature' parameter from the formatted
     JSON dictionary(JSON object returne from the API request to forecast.io).
     '''
     daily_data = getDailyWeatherData(weather_json_dict)
-    data_param = 'temperature'
-    series_name = 'Daily temperature data'
-    TT = getDataSeries(daily_data, data_param, series_name)
+    TT_min = getDailyWEather(daily_data, 'temperaureMin', series_name)
+    TT_max = getDailyT
     return TT
 
 def getHourlyApparentTemperature(weather_json_dict):
@@ -159,8 +167,7 @@ def config1x1PlotLayout():
 
 def plotHourlyTemperature(hourly_TT_data_series):
     '''
-    Function to visualize hourly-temperature and hourly-apparent-temeperature
-    data.
+    Function to visualize hourly-temperature data.
     '''
     config1x1PlotLayout()
     plt.show()
@@ -168,6 +175,14 @@ def plotHourlyTemperature(hourly_TT_data_series):
     # save_fig_title = 'test'
     # save_fig_fmt = '.svg'
     # save_fig_path = 'figs/'
+
+def plotDailyTemprature(daily_TT_data_series):
+    '''
+    Function to visualize daily-temperature data.
+    '''
+    pass
+    config1x1PlotLayout()
+    plt.show()
 
 def saveWeatherData2Csv(save_2_path):
     '''
@@ -201,7 +216,6 @@ if __name__ == '__main__':
         json_data = getJSONWeatherData(address)
         json_dict = json_data.json()
 
-        TT = getHourlyTemperature(json_dict)
-        TT_apparent = getHourlyApparentTemperature(json_dict)
+        TT = getDailyTemperature(json_dict)
 
-        plotHourlyTemperature(TT)
+        plotDailyTemprature(TT)
