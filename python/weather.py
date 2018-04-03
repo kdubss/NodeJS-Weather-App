@@ -199,7 +199,13 @@ def getTimeMachineDataFromDarkSkyAPI(input_address, time):
                     '.json()' method, which returns a Python Dict object
                     (of key-value pair).
     '''
-    pass
+    unix_time = convertPSTTime2Unix(time)
+    lat, lon = getLatLon(input_address)
+    url = 'https://api.darksky.net/forecast/%s/%s,%s,%i' % (env['forecastApiKey'],
+                                                            str(lat), str(lon),
+                                                            int(unix_time))
+    r = requests.get(url)
+    return r
 
 def convertPSTTime2Unix(readable_time):
     '''
