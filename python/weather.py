@@ -5,7 +5,9 @@ Module to parse the JSON weather data from forecast.io (darksky.net) and to
 make data manipulaions by using Pandas.
 '''
 import argparse as ag
-import pandas as pd
+import datetime as dt
+
+import api_requests as dsky
 
 def getCelsiusFromFarenheit(temp_farenheit):
     '''
@@ -73,25 +75,6 @@ def getDailyWeatherData(weather_json_dict):
     daily_data = weather_json_dict['daily']
     return daily_data
 
-def getDailyMinMaxDataSeries(weather_json_dict):
-    '''
-    Function to parse out and prepare the Daily Min. & Max. weather data into a
-    pandas.core.series.Series object with weather data as the values
-    and formatted (i.e. human-readable) dates as the series indices.
-    '''
-    daily_data = getDailyWeatherData(weather_json_dict)
-    time
-
-def getDailyMinMaxTemperature(weather_json_dict):
-    '''
-    Function to get and parse the 'temperature' parameter from the formatted
-    JSON dictionary(JSON object returne from the API request to forecast.io).
-    '''
-    daily_data = getDailyWeatherData(weather_json_dict)
-    TT_min = getDailyWEather(daily_data, 'temperaureMin', series_name)
-    TT_max = getDailyT
-    return TT
-
 def getHourlyApparentTemperature(weather_json_dict):
     '''
     Function to get and parse the 'apparentTemperature' parameter from the
@@ -125,25 +108,6 @@ def config1x1PlotLayout():
             xlabel.set_fontsize(16)
             xlabel.set_rotation(20)
 
-def plotHourlyTemperature(hourly_TT_data_series):
-    '''
-    Function to visualize hourly-temperature data.
-    '''
-    config1x1PlotLayout()
-    plt.show()
-
-    # save_fig_title = 'test'
-    # save_fig_fmt = '.svg'
-    # save_fig_path = 'figs/'
-
-def plotDailyTemprature(daily_TT_data_series):
-    '''
-    Function to visualize daily-temperature data.
-    '''
-    pass
-    config1x1PlotLayout()
-    plt.show()
-
 def saveWeatherData2Csv(save_2_path):
     '''
     Function to save the parsed weather data-series to a directory defined by
@@ -163,13 +127,6 @@ if __name__ == '__main__':
         help = 'Address to fetch weather data for'
     )
     parser.add_argument(
-        '-p',
-        action = 'store_true',
-        default = False,
-        help = 'Boolean flag to trigger weather or not to plot the \
-        hourly temperature / apparent-temperature data'
-    )
-    parser.add_argument(
         '--forecast',
         action = 'store_true',
         default = False,
@@ -183,18 +140,24 @@ if __name__ == '__main__':
         help = 'Boolean trigger to print out the details concerning \'time-machine\' \
         requests to DarkSky API.'
     )
+    parser.add_argument(
+        '--time',
+        action = 'store',
+        type = str
+    )
+
     args = parser.parse_args()
 
-    if args.a == 'Vancouver' and args.p:
-        address = 'Kitsilano Vancouver'
-        json_data = getJSONWeatherData(address)
-        json_dict = json_data.json()
+    if args.a == '':
+        pass
 
-        TT = getDailyTemperature(json_dict)
+    elif args.forecast and args.a:
+        forecastReq = dsky.getForecastDataFromDarkSkyAPI(args.a)
+        print('\nFetching forecast weather data for %s\n(using the DarkSky API)\n' % args.a)
+        print(forecastReq.json())
 
-        plotDailyTemprature(TT)
-
-    if args.forecast:
-        showForecastRequestDocs()
-    elif args.time_machine:
-        showTimeMachineRequestDocs()
+    elif args.time_machine and args.time and args.a:
+        timeMachineReq = dsky.getTimeMachineDataFromDarkSkyAPI(args.a, args.time)
+        print('\nFetching time-machine weather data for %s (from %s to %s midnight)\n' % \
+              (args.a, dsky.parseDateString2DateTimeObj(args.time), dt.date.today()))
+        print(timeMachineReq.json())
