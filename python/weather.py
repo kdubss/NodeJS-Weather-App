@@ -14,6 +14,84 @@ import matplotlib as mpl
 from local_settings import env
 from geocode import getLatLon
 
+def showForecastRequestDocs():
+    '''
+    Function to print out the forecast request (to the DarkSky API).
+    '''
+    print('\n',
+        '''
+        When making a request to the 'forecast' URL from DarkSky:
+        (API responses consist of a UTF-8-encoded, JSON-formatted object)
+
+        -----
+
+        The returned object (request.models.Response type) has a \'.json()\'
+        method, which returns a Python Dict object.
+
+        Calling the .keys() - i.e. 'forecast.json().keys()' method on the dict
+        will return the following Keys,
+
+            1. 'flags'
+            2. 'offset'
+            3. 'hourly'
+            4. 'timezone'
+            5. longitude
+            6. 'daily'
+            7. 'latitude'
+            8. 'currently'
+            9. 'minutely'
+
+        > 'flags':
+            - Returns a Python Dict object
+            - A flags object containing miscellaneous metadata about the request.
+            - Keys,
+                - 'sources':
+                - 'isd-stations'
+                - 'units'
+
+        > 'offset':
+            - deprecated (use timezone, instead)
+
+        > 'currently'
+            - SINGLE data point containing the current weather conditions
+            at the requested location
+
+        > 'minutely'
+            - Data block containing weather conditions minute-by-minute for the
+            next hour
+
+        > 'hourly'
+            - Data block containing the weather conditions day-by-day for the
+            next two-days.
+
+        > 'daily'
+            - Data block containing the weather conditions day-by-day for the
+            next week
+
+        > 'latitude'
+            - Requested latitude
+
+        > 'longitude'
+            - Requested longitude
+
+        -----
+
+        Some of the values returned for each key will be a 'data block object',
+
+        > Data Block Objects:
+            - Represents the various weather phenomena occurring over a period
+            of time.
+            - These objects contains the following properties:
+                - 'data',
+                    - Array of data points
+                    - Ordered by time
+                    - Describes the weather conditions at the requested location
+                    (lat,lon) over time
+                - 'summary':
+                    - Human-readable summary of data block
+        ''', '\n'
+    )
+
 def getCelsiusFromFarenheit(temp_farenheit):
     '''
     Function to convert temperature from farenheit to celsius.
@@ -209,6 +287,13 @@ if __name__ == '__main__':
         help = 'Boolean flag to trigger weather or not to plot the \
         hourly temperature / apparent-temperature data'
     )
+    parser.add_argument(
+        '--forecast',
+        action = 'store_true',
+        default = False,
+        help = 'Boolean trigger to print out the details concerning \'forecast\' \
+        requests to the DarkSky API.'
+    )
     args = parser.parse_args()
 
     if args.a == 'Vancouver' and args.p:
@@ -219,3 +304,6 @@ if __name__ == '__main__':
         TT = getDailyTemperature(json_dict)
 
         plotDailyTemprature(TT)
+
+    if args.forecast:
+        showForecastRequestDocs()
