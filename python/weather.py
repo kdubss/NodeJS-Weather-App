@@ -8,8 +8,9 @@ import requests
 import time
 import argparse as ag
 import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib as mpl
+
+from dateutil import parser
+from time import mktime
 
 from local_settings import env
 from geocode import getLatLon
@@ -161,7 +162,7 @@ def getFarenheitFromCelsius(temp_celsius):
 
 def getForecastDataFromDarkSkyAPI(input_address):
     '''
-    'forecast' request to the forecast URL
+    'Forecast' request to the forecast URL
     (https://api.darksky.net/forecast/[api-key]/[lat],[lon]) from the DarkSky
     API.
 
@@ -180,7 +181,41 @@ def getForecastDataFromDarkSkyAPI(input_address):
                                                          str(lat), str(lon))
     r = requests.get(url)
     return r
-    
+
+def getTimeMachineDataFromDarkSkyAPI(input_address, time):
+    '''
+    'Time-Machine' request to the time-machine-url
+    (https://api.darksky.net/forecast/[key]/[latitude],[longitude],[time]) from
+    the Dark Sky API.
+
+    INPUT:
+        1. 'input_address'  ::  - Str input for the location of the API-request
+                                - Can be a zip/postal code, actual street address,
+                                or just a city name.
+        2. 'time'  ::  - UNIX timestamp
+    OUTPUT:
+        1. 'r'  ::  - r = the response output from the API request.
+                    - The returned object (request.models.Response type) has a
+                    '.json()' method, which returns a Python Dict object
+                    (of key-value pair).
+    '''
+    pass
+
+def convertPSTTime2Unix(readable_time):
+    '''
+    Functionality to convert Human readable time back to a UNIX time stamp
+    Uses the datetime module and the 'mktime()' function, which uses the
+    'struct_time' (full 9-tuple) which expresses the time in local time.
+    Function returns a floating point number.
+
+    INPUT:
+        1. 'readable_time'  ::  - A human readable time
+                                - E.g. '2018-04-02' or 'April 2, 2018'
+    '''
+    time = parser.parse(readable_time)
+    unix_time = mktime(time.timetuple())
+    return unix_time
+
 def convertUnixTime2PST(unix_timestamp):
     '''
     Function to convert unix time stamp to PST time (localy here, in Vancouver)
@@ -360,7 +395,7 @@ if __name__ == '__main__':
         requests to the DarkSky API.'
     )
     parser.add_argument(
-        '--historical',
+        '--time_machine',
         action = 'store_true',
         default = False,
         help = 'Boolean trigger to print out the details concerning \'time-machine\' \
@@ -379,5 +414,5 @@ if __name__ == '__main__':
 
     if args.forecast:
         showForecastRequestDocs()
-    elif args.historical:
+    elif args.time_machine:
         showTimeMachineRequestDocs()
