@@ -4,6 +4,7 @@
 Module to parse the JSON weather data from forecast.io (darksky.net) and to
 make data manipulaions by using Pandas.
 '''
+import os
 import argparse as ag
 import datetime as dt
 import pandas as pd
@@ -13,6 +14,11 @@ import api_requests as dsky
 def getCelsiusFromFarenheit(temp_farenheit):
     '''
     Function to convert temperature from farenheit to celsius.
+
+    INPUT:
+        1. 'temp_farenheit'  ::  - temperature in farenheit
+    OUTPUT:
+        1. 'temp_celsius'  ::  - temperature in celsius
     '''
     temp_celsius = (5/9) * (temp_farenheit - 32)
     return temp_celsius
@@ -20,6 +26,11 @@ def getCelsiusFromFarenheit(temp_farenheit):
 def getFarenheitFromCelsius(temp_celsius):
     '''
     Function to convert temperature from celsius to farenheit
+
+    INPUT:
+        1. 'temp_celsius'  ::  - temperture in celsius
+    OUTPUT:
+        1. 'temp_farenheit'  ::  - temperature in farenheit
     '''
     temp_farenheit = ((9/5) * temp_celsius) + 32
     return temp_farenheit
@@ -104,12 +115,42 @@ def getTimeMachineHourlyTemperatureSeries(hourly_weather_list):
     )
     return hourly_series
 
-def saveWeatherData2Csv(save_2_path):
+def makeSave2Folder(directoy_or_path, dir_name):
+    '''
+    Function to create a directory (path) in which to save stuff (i.e. data, figs)
+    to.
+    If the directory with 'dir_name' already exists, then the save operation will
+    be conducted on the same folder (i.e. 'dir_name').
+
+    INPUT:
+        1. 'directory_or_path'  ::  - Absolute or relative directory in which to
+                                    create the folder in which to save stuff into
+                                    - Str object
+        2. 'dir_name'  ::  - Name of the folder to create.
+                           - Str object
+    '''
+    if os.path.isdir(directoy_or_path + '/' + dir_name):
+        print('\nThe folder already exists!\n')
+    else:
+        os.mkdir(directoy_or_path + '/' + dir_name)
+        print('\nThe folder %s has been successfully created!\n' % dir_name)
+
+def saveWeatherData2Csv(data_2_save, save_2_path, fname):
     '''
     Function to save the parsed weather data-series to a directory defined by
     'save_2_path'.
+
+    INPUT:
+        1. 'save_2_path'  ::  - Absolute or relative path of where to save the data.
+        2. 'dir_name'  ::  - Name of the folder in which the save action is to be
+                           performed
+    OUTPUT:
+        1. none  ::  - No output
+                     - Function saves figure from data series' (.csv format) into
+                     the path defined by 'save_2_path'.
     '''
-    pass
+    fname = fname
+    data_2_save.to_csv(save_2_path + '/' + fname, index = True)
 
 if __name__ == '__main__':
 
