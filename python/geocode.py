@@ -2,7 +2,6 @@
 import requests
 
 from urllib.parse import quote
-from local_settings import env
 
 def getLatLon(inputAddress):
     '''
@@ -18,8 +17,3 @@ def getLatLon(inputAddress):
     lon = r.json()['results'][0]['geometry']['location']['lng']
 
     return lat, lon
-
-if __name__ == '__main__':
-
-    address = 'Kitsilano Vancouver'
-    print(getLatLon(address))
