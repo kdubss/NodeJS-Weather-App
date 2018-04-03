@@ -138,7 +138,7 @@ def showTimeMachineRequestDocs():
             > 'daily'
                 - Data block will only contain a SINGLE DATA POINT referring to the
                 requested date.
-                
+
             > 'alerts'
                 - Data block omitted
 
@@ -159,16 +159,28 @@ def getFarenheitFromCelsius(temp_celsius):
     temp_farenheit = ((9/5) * temp_celsius) + 32
     return temp_farenheit
 
-def getJSONWeatherData(inputAddress):
+def getForecastDataFromDarkSkyAPI(input_address):
     '''
-    Function to retrieve the weather data from using the darksky.net API
+    'forecast' request to the forecast URL
+    (https://api.darksky.net/forecast/[api-key]/[lat],[lon]) from the DarkSky
+    API.
+
+    INPUT:
+        1. 'input_address'  ::  - Str input for the location of the API-request
+                                - Can be a zip/postal code, actual street address,
+                                or just a city name.
+    OUTPUT:
+        1. 'r'  ::  - r = the response output from the API request.
+                    - The returned object (request.models.Response type) has a
+                    '.json()' method, which returns a Python Dict object
+                    (of key-value pair).
     '''
-    lat, lon = getLatLon(inputAddress)
+    lat, lon = getLatLon(input_address)
     url = 'https://api.darksky.net/forecast/%s/%s,%s' % (env['forecastApiKey'],
                                                          str(lat), str(lon))
     r = requests.get(url)
     return r
-
+    
 def convertUnixTime2PST(unix_timestamp):
     '''
     Function to convert unix time stamp to PST time (localy here, in Vancouver)
