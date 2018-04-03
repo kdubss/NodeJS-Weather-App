@@ -190,6 +190,7 @@ if __name__ == '__main__':
         forecast_data = forecast_request.json()
         hourly = forecast_data['hourly']['data']
         hourly_series = getForecastHourlyTemperatureSeries(hourly)
+        saveWeatherData2Csv(hourly_series, 'csv', 'forecast-hourly-temp.csv')
         print('\nFetching forecast weather data for %s\n(using the DarkSky API)\n' % args.a)
         print(hourly_series)
 
@@ -198,6 +199,7 @@ if __name__ == '__main__':
         past_data = time_machine_request.json()
         past_hourly = past_data['hourly']['data']
         past_series = getTimeMachineHourlyTemperatureSeries(past_hourly)
+        saveWeatherData2Csv(past_series, 'csv', 'past-hourly-temp.csv')
         print('\nFetching time-machine weather data for %s (from %s to %s midnight)\n' % \
               (args.a, dsky.parseDateString2DateTimeObj(args.time), dt.date.today()))
         print(past_series)
