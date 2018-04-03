@@ -142,6 +142,20 @@ def showTimeMachineRequestDocs():
         ''', '\n'
     )
 
+def parseDateString2DateTimeObj(date):
+    '''
+    Function using the dateutil.parser.parse() function to parse any string date
+    (e.g. '2018-04-03' or 'April 3, 2018') into a datetime object.
+
+    INPUT:
+        1. 'date'  ::  - Str object
+                       - e.g. '2018-04-03' or 'April 3, 2018'
+    OUTPUT:
+        1. 'rdate'  ::  - Returned date object
+    '''
+    rdate = parser.parse(date)
+    return rdate
+
 def getForecastDataFromDarkSkyAPI(input_address):
     '''
     'Forecast' request to the forecast URL
