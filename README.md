@@ -6,6 +6,30 @@
 
   *The* ***goal*** *of this project is to ultimately use `React.js` to create the font-end of an on-line app where* ***current***, ***hourly***, *and* ***minutely*** *weather data will be displayed, both visually as time-series figures and as data tables, depending on the input-address from the user.  Visual representation will be presented by using `D3.js`; Back-end will be powered by `Node.js` (currently, to __<u>test out and learn the `D3.js` library</u>__, the __back-end server will be powered by `Python`__); Data fetching, parsing, and manipulations will be done so using `Python/Pandas`*.
 
+## API requests
+
+### 1. *Forecast* requests
+  - URL: `https://api.darksky.net/forecast/[key]/[latitude],[longitude]`
+  - *returns the current weather conditions, a __minute-by-minute__ forecast for the __next hour__ (where available), an __hour-by-hour__ forecast for the next 48 hours, and a __day-by-day__ forecast for the next week*.
+
+### 2. *Time-Machine* requests
+  - URL: `https://api.darksky.net/forecast/[api-key]/[latitude],[longitude],[time]`
+  - *Request returns the observed or forecast weather conditions for a date in the past or future (FOR THE SAKE OF THIS MVP --> FOCUS ON DATES IN THE PAST)*.
+
+## Flask server
+
+  - To run the Flask server, `cd` into `python/flask-d3/` from the projects' root directory.
+  - Once there, run `python flask_server.py` to start the server (on `localhost::8080`)
+  - __*End-points*__,
+    - `/`: Index/home page (rendering `templates/index.html`)
+      - The `/` end-point currently renders an `<ul>` element, listing `href` links for different parts of the project
+        - For example, a listing of temperature parameters links directly to the D3 chart of that weather parameter (<i>i.e.</i> clicking on `Temperature` will take you to a static `html` page for the D3)
+    - `/about`: Gives a summary of what the project is all about (<i>i.e.</i> what tech stack is used, what API is being used, etc.)
+
+## D3.js charts
+
+  - *Work-in-progress*
+
 ### Data Parameters (found at *[forecast.io](https://darksky.net)*) - Hourly Data
 (for full details on request response formats, see [here](https://darksky.net/dev/docs#response-format))
 

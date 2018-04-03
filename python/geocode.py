@@ -15,5 +15,4 @@ def getLatLon(inputAddress):
     r = requests.get(apiAddress)
     lat = r.json()['results'][0]['geometry']['location']['lat']
     lon = r.json()['results'][0]['geometry']['location']['lng']
-
     return lat, lon
