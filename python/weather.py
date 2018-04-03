@@ -9,6 +9,8 @@ import argparse as ag
 import datetime as dt
 import pandas as pd
 
+from dateutil.parser import parse
+
 import api_requests as dsky
 
 def getCelsiusFromFarenheit(temp_farenheit):
@@ -72,7 +74,7 @@ def getForecastHourlyTemperatureSeries(hourly_weather_list):
         data_series_list.append(each_hrs_data['temperature'])
     hourly_series = pd.Series(
         data_series_list,
-        index = timestamp_series_list,
+        index = [parse(index) for index in timestamp_series_list],
         name = 'Forecasted hourly temperature data series'
     )
     return hourly_series
@@ -110,7 +112,7 @@ def getTimeMachineHourlyTemperatureSeries(hourly_weather_list):
         data_series_list.append(each_hrs_data['temperature'])
     hourly_series = pd.Series(
         data_series_list,
-        index = timestamp_series_list,
+        index = [parse(index) for index in timestamp_series_list],
         name = 'Time-machine hourly temperature data series'
     )
     return hourly_series
