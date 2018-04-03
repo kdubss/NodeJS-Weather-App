@@ -33,8 +33,10 @@ def about():
 
 @app.route('/temperature')
 def show_temp_d3():
-    forecast = dsky.getForecastDataFromDarkSkyAPI('Vancouver').json()
-    
+    forecast = dsky.getForecastDataFromDarkSkyAPI('Vancouver')
+    forecast = forecast.json()
+    current = forecast['currently']
+    return 'Current weather conditions: %s' % current['summary']
 
 if __name__ == '__main__':
 
