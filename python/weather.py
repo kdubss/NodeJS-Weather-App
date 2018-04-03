@@ -33,35 +33,74 @@ def getHourlyWeatherData(weather_json_dict):
     hourly_data = weather_json_dict['hourly']['data']
     return hourly_data
 
-def getForecastHourlyTemperatureSeries(hourly_list):
+def getForecastHourlyTemperatureSeries(hourly_weather_list):
     '''
     Function to parse out and prepare the weather data into a
     pandas.core.series.Series object with weather data as the values
     and formatted (i.e. human-readable) dates as the series indices.
 
     INPUT:
-        1. 'hourly_list'  ::  - List object of the response object returned from
-                              the forecast request to the DarkSky API.
-                              - For 'forecast' requests --> hourly data is returned
-                              for the next days (48 hrs).
-                              - Input is a list of dictionary objects, one for
-                              each hour in the next 2 days.
+        1. 'hourly_weather_list'  ::  - List object of the hourly data from the
+                                      response object returned from
+                                      the forecast request to the DarkSky API.
+                                      - For 'forecast' requests --> hourly data is returned
+                                      for the next days (48 hrs).
+                                      - Input is a list of dictionary objects, one for
+                                      each hour in the next 2 days.
     OUTPUT:
         1. 'hourly_series'  ::  - Pandas.core.series.Series object of temperature
                                 data fetched from the DarkSky API.
                                 - Series constructed from 2 lists; 1 containing
                                 the temperture values from the 'hourly_list' input,
                                 the other containing human-readable datetimes,
-                                also parsed from the 'hourly_list' input.
+                                also parsed from the 'hourly_weather_list' input.
     '''
     timestamp_series_list, data_series_list = [], []
-    for each_hrs_data in hourly_list:
+    for each_hrs_data in hourly_weather_list:
         timestamp_series_list.append(dsky.convertUnixTime2PST(each_hrs_data['time']))
         data_series_list.append(each_hrs_data['temperature'])
     hourly_series = pd.Series(
         data_series_list,
         index = timestamp_series_list,
-        name = 'Hourly temperature data series'
+        name = 'Forecasted hourly temperature data series'
+    )
+    return hourly_series
+
+def getTimeMachineHourlyTemperatureSeries(hourly_weather_list):
+    '''
+    Function to parse out and prepare the weather data into a
+    pandas.core.series.Series object with weather data as the values
+    and formatted (i.e. human-readable) dates as the series indices.
+
+    INPUT:
+        1. 'hourly_weather_list'  ::  - List of the hourly data returned from the
+                                      response object returned from the timeMachine
+                                      request to the DarkSky API.
+                                      - Series constructed from 2 lists; 1 containing
+                                      the temperture values from the 'hourly_list' input,
+                                      the other containing human-readable datetimes,
+                                      also parsed from the 'hourly_weather_list' input.
+                                      - RECALL that the time-machine requests will only
+                                      return 24-hrs worth of data (for hourly data)
+                                      from midnight (day = t - 2) of the day specified
+                                      on request, to midnight of the following day
+                                      (day = t - 1).
+    OUTPUT:
+        1. 'hourly_series'  ::  - Pandas.core.series.Series object of temperature
+                                data fetched from the DarkSky API.
+                                - Series constructed from 2 lists; 1 containing
+                                the temperture values from the 'hourly_weather_list' input,
+                                the other containing human-readable datetimes,
+                                also parsed from the 'hourly_weather_list' input.
+    '''
+    timestamp_series_list, data_series_list = [], []
+    for each_hrs_data in hourly_weather_list:
+        timestamp_series_list.append(dsky.convertUnixTime2PST(each_hrs_data['time']))
+        data_series_list.append(each_hrs_data['temperature'])
+    hourly_series = pd.Series(
+        data_series_list,
+        index = timestamp_series_list,
+        name = 'Time-machine hourly temperature data series'
     )
     return hourly_series
 
@@ -106,15 +145,18 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.forecast and args.a:
-        forecast_res = dsky.getForecastDataFromDarkSkyAPI(args.a)
-        forecast_data = forecast_res.json()
+        forecast_request = dsky.getForecastDataFromDarkSkyAPI(args.a)
+        forecast_data = forecast_request.json()
         hourly = forecast_data['hourly']['data']
         hourly_series = getForecastHourlyTemperatureSeries(hourly)
         print('\nFetching forecast weather data for %s\n(using the DarkSky API)\n' % args.a)
         print(hourly_series)
 
     elif args.time_machine and args.time and args.a:
-        timeMachineReq = dsky.getTimeMachineDataFromDarkSkyAPI(args.a, args.time)
+        time_machine_request = dsky.getTimeMachineDataFromDarkSkyAPI(args.a, args.time)
+        past_data = time_machine_request.json()
+        past_hourly = past_data['hourly']['data']
+        past_series = getTimeMachineHourlyTemperatureSeries(past_hourly)
         print('\nFetching time-machine weather data for %s (from %s to %s midnight)\n' % \
               (args.a, dsky.parseDateString2DateTimeObj(args.time), dt.date.today()))
-        print(timeMachineReq.json())
+        print(past_series)
