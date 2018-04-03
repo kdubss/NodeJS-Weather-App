@@ -89,6 +89,59 @@ def showForecastRequestDocs():
                     (lat,lon) over time
                 - 'summary':
                     - Human-readable summary of data block
+            - *** CURRENTLY, FOR MVPs' SAKE --> ONLY CONCERNED WITH 'TEMPERATURE' ***
+        ''', '\n'
+    )
+
+def showTimeMachineRequestDocs():
+    '''
+    Function to print out the forecast request (to the DarkSky API).
+    '''
+    print('\n'
+        '''
+        When making a request to the 'forecast' URL from DarkSky:
+        (API responses consist of a UTF-8-encoded, JSON-formatted object)
+
+        -----
+
+        This request returns the observed or forecast weather conditions for a
+        date in the past or future.
+        (*** FOR THE SAKE OF THIS MVP --> FOCUS ON DATES IN THE PAST ***)
+
+        URL: 'https://api.darksky.net/forecast/[key]/[latitude],[longitude],[time]'
+
+        Time Machine Requests --> identical in structutre to Forecast requests
+        EXCEPT,
+
+            > 'currently'
+                - Data point will refer to the TIME PROVIDED (...instead of current time)
+
+            > 'minutely'
+                - Data block will be ommitted...
+                - Unless requesting a time WITHIN AN HOUR OF PRESENT
+
+            > 'hourly'
+                - Data block will contain data points STARTING AT MIDNIGHT (OF LOCAL TIME)
+                of the DAY REQUESTED, and will continue until MIDNIGHT OF THE FOLLOWING
+                DAY
+
+                    - For example,
+                        - A request is made for day = (t-2); where 't' = present day
+                        - 'hourly' data block from the above request will start
+                        from,
+
+                            (00:00-local @ day = t-2) ==> (00:00-local @ day = t-1)
+
+                    - See 'https://darksky.net/dev/docs#time-machine-request' for full
+                    API-docs
+
+            > 'daily'
+                - Data block will only contain a SINGLE DATA POINT referring to the
+                requested date.
+                
+            > 'alerts'
+                - Data block omitted
+
         ''', '\n'
     )
 
@@ -294,6 +347,13 @@ if __name__ == '__main__':
         help = 'Boolean trigger to print out the details concerning \'forecast\' \
         requests to the DarkSky API.'
     )
+    parser.add_argument(
+        '--historical',
+        action = 'store_true',
+        default = False,
+        help = 'Boolean trigger to print out the details concerning \'time-machine\' \
+        requests to DarkSky API.'
+    )
     args = parser.parse_args()
 
     if args.a == 'Vancouver' and args.p:
@@ -307,3 +367,5 @@ if __name__ == '__main__':
 
     if args.forecast:
         showForecastRequestDocs()
+    elif args.historical:
+        showTimeMachineRequestDocs()
