@@ -152,7 +152,11 @@ def saveWeatherData2Csv(data_2_save, save_2_path, fname):
                      the path defined by 'save_2_path'.
     '''
     fname = fname
-    data_2_save.to_csv(save_2_path + '/' + fname, index = True)
+    data_2_save.to_csv(
+        save_2_path + '/' + fname,
+        index = True,
+        header = ['Temperature']
+    )
 
 if __name__ == '__main__':
 
@@ -195,9 +199,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.save2csv:
+
         print('\nFetching, parsing, and saveing weather data from the DarkSky\n\
 API to the \'csv/\' directory!\n')
         if args.forecast and args.a:
+
             makeSave2Folder('./', 'csv/')
             print('\nSaving Forecast %s weather data for %s in \'csv/\' directory!\n' % \
                   ('temperature', args.a))
@@ -207,8 +213,12 @@ API to the \'csv/\' directory!\n')
             forecast_hourly_series = getForecastHourlyTemperatureSeries(forecast_hourly_data)
             saveWeatherData2Csv(forecast_hourly_series, 'csv', 'forecast-hourly-temp.csv')
             print('\nFetching forecast weather data for %s\n(using the DarkSky API)\n' % args.a)
-            print(hourly_series)
+            print('\nThe following is the data that has been saved:\n',
+                  forecast_hourly_series, 'Confirm this is the desired product and \
+make necessary changes to code as needed\n')
+
         elif args.time_machine and args.time and args.a:
+
             makeSave2Folder('./', 'csv/')
             print('\nSaving Time Machine %s weather data for %s (from %s) in the \'csv/\' directory!\n' % ('temperature', args.a, args.time))
             time_machine_request = dsky.getTimeMachineDataFromDarkSkyAPI(args.a, args.time)
@@ -218,8 +228,12 @@ API to the \'csv/\' directory!\n')
             saveWeatherData2Csv(past_series, 'csv', 'past-hourly-temp.csv')
             print('\nFetching time-machine weather data for %s (from %s to %s midnight)\n' % \
                   (args.a, dsky.parseDateString2DateTimeObj(args.time), dt.date.today()))
-            print(past_series)
+            print('\nThe following is the data that has been saved:\n\n',
+                  past_series, '\nConfirm this is the desired product and \
+make necessary changes to code as needed\n')
+
         else:
+
             print('\nYou need to enter \'--forecast\' for forecast data or \
 \'--time_machine\'\n\
 for historical hind-cast data, and location (i.e. \'Vancouver\') to \n\
