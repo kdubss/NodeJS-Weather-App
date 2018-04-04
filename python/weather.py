@@ -199,8 +199,8 @@ if __name__ == '__main__':
 API to the \'csv/\' directory!\n')
         if args.forecast and args.a:
             makeSave2Folder('./', 'csv/')
-            print('\nSaving %s weather data for %s in \'csv/\' directory!\n' % \
-                  ('weather', args.a))
+            print('\nSaving Forecast %s weather data for %s in \'csv/\' directory!\n' % \
+                  ('temperature', args.a))
             forecast_request = dsky.getForecastDataFromDarkSkyAPI(args.a)
             forecast_data = forecast_request.json()
             forecast_hourly_data = forecast_data['hourly']['data']
@@ -208,18 +208,19 @@ API to the \'csv/\' directory!\n')
             saveWeatherData2Csv(forecast_hourly_series, 'csv', 'forecast-hourly-temp.csv')
             print('\nFetching forecast weather data for %s\n(using the DarkSky API)\n' % args.a)
             print(hourly_series)
+        elif args.time_machine and args.time and args.a:
+            makeSave2Folder('./', 'csv/')
+            print('\nSaving Time Machine %s weather data for %s (from %s) in the \'csv/\' directory!\n' % ('temperature', args.a, args.time))
+            time_machine_request = dsky.getTimeMachineDataFromDarkSkyAPI(args.a, args.time)
+            past_data = time_machine_request.json()
+            past_hourly = past_data['hourly']['data']
+            past_series = getTimeMachineHourlyTemperatureSeries(past_hourly)
+            saveWeatherData2Csv(past_series, 'csv', 'past-hourly-temp.csv')
+            print('\nFetching time-machine weather data for %s (from %s to %s midnight)\n' % \
+                  (args.a, dsky.parseDateString2DateTimeObj(args.time), dt.date.today()))
+            print(past_series)
         else:
-            print('\nYou need to enter \'--forecat\' for forecast data or \
+            print('\nYou need to enter \'--forecast\' for forecast data or \
 \'--time_machine\'\n\
 for historical hind-cast data, and location (i.e. \'Vancouver\') to \n\
 save the data to \'csv/\'.\n')
-
-    elif args.time_machine and args.time and args.a:
-        time_machine_request = dsky.getTimeMachineDataFromDarkSkyAPI(args.a, args.time)
-        past_data = time_machine_request.json()
-        past_hourly = past_data['hourly']['data']
-        past_series = getTimeMachineHourlyTemperatureSeries(past_hourly)
-        saveWeatherData2Csv(past_series, 'csv', 'past-hourly-temp.csv')
-        print('\nFetching time-machine weather data for %s (from %s to %s midnight)\n' % \
-              (args.a, dsky.parseDateString2DateTimeObj(args.time), dt.date.today()))
-        print(past_series)
