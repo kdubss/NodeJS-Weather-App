@@ -29,6 +29,15 @@
 ## D3.js charts
 
   - *Work-in-progress*
+  - The __goal__ is to generate a figure like the one *below*, but using `D3.js` instead of [matplotlib](matplotlib.org).
+
+![Line Chart](https://github.com/kdubss/NodeJS-Weather-App/blob/master/python/figs/test.png)
+
+  - The figure above displays the hourly temperature data for both __*forecast*__ and __*time-machine*__ requests to the *Dark Sky API*.
+  - For the two data-series' plotted above, there is an obvious region of overlap between the *hindcast* and *forecast* hourly temperature data returned, from the two API requests.
+  - The *time machine* request above, was made for April 3, 2018, which means hourly temperatures from 03 Apr 00:00 to 03 Apr 23:00 are returned.
+  - The *forecast* request was made @ ~ 14:00 today (April 3), which means there will be an overlap of > 7 hours.
+    - This can be countered by either __a.__ cutting a slice of the data from the forecast data series, or __b.__ cutting a slice of the time-machine data series...  (*more to come*)
 
 ### Data Parameters (found at *[forecast.io](https://darksky.net)*) - Hourly Data
 (for full details on request response formats, see [here](https://darksky.net/dev/docs#response-format))
