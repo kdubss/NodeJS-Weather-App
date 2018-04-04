@@ -184,17 +184,35 @@ if __name__ == '__main__':
         action = 'store',
         type = str
     )
+    parser.add_argument(
+        '--save2csv',
+        action = 'store_true',
+        help = 'Boolean trigger to prompt the saving of the Forecast and \
+        Time-machine Hindcast weather data (from Pandas.core.series.Series) \
+        to a .csv file in the \'csv/\' directory.'
+    )
 
     args = parser.parse_args()
 
-    if args.forecast and args.a:
-        forecast_request = dsky.getForecastDataFromDarkSkyAPI(args.a)
-        forecast_data = forecast_request.json()
-        hourly = forecast_data['hourly']['data']
-        hourly_series = getForecastHourlyTemperatureSeries(hourly)
-        saveWeatherData2Csv(hourly_series, 'csv', 'forecast-hourly-temp.csv')
-        print('\nFetching forecast weather data for %s\n(using the DarkSky API)\n' % args.a)
-        print(hourly_series)
+    if args.save2csv:
+        print('\nFetching, parsing, and saveing weather data from the DarkSky\n\
+API to the \'csv/\' directory!\n')
+        if args.forecast and args.a:
+            makeSave2Folder('./', 'csv/')
+            print('\nSaving %s weather data for %s in \'csv/\' directory!\n' % \
+                  ('weather', args.a))
+            forecast_request = dsky.getForecastDataFromDarkSkyAPI(args.a)
+            forecast_data = forecast_request.json()
+            forecast_hourly_data = forecast_data['hourly']['data']
+            forecast_hourly_series = getForecastHourlyTemperatureSeries(forecast_hourly_data)
+            saveWeatherData2Csv(forecast_hourly_series, 'csv', 'forecast-hourly-temp.csv')
+            print('\nFetching forecast weather data for %s\n(using the DarkSky API)\n' % args.a)
+            print(hourly_series)
+        else:
+            print('\nYou need to enter \'--forecat\' for forecast data or \
+\'--time_machine\'\n\
+for historical hind-cast data, and location (i.e. \'Vancouver\') to \n\
+save the data to \'csv/\'.\n')
 
     elif args.time_machine and args.time and args.a:
         time_machine_request = dsky.getTimeMachineDataFromDarkSkyAPI(args.a, args.time)
