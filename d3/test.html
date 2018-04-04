@@ -13,6 +13,22 @@
       const path2file = './csv/';
       const fname = 'forecast-hourly-temp.csv';
 
+      // Setting up the canvas template
+      const margin = {top: 30, right: 20, bottom: 30, left: 50},
+        width = 600 - margin.left - margin.right,
+        height = 270 - margin.top - margin.bottom;
+
+      // Adding SVG canvas:
+      const svg = d3.select('body')
+        .append('svg')
+          .attr('width', width + margin.left + margin.right)
+          .attr('heigth', height + margin.top + margin.bottom);
+
+      // Variable to format the datetime object column of the imported csv data:
+      const parseDate = d3.time.format(%d-%b %H:00);
+
+      // Importing Forecast .csv data & formatting the temperature value from
+      // strings to numerical values
       d3.csv(path2file + fname, (data) => {
         // First data point from the returned data object
         console.log('First data point in returned array:', data[0]);
@@ -22,6 +38,7 @@
         //   - Will use the unary operator
         data.forEach((d) => {
           d.temperature = +d.temperature;
+          d.datetime = parseDate(d.datetime);
         });
         // Value types properly converted
         console.log('Converted type for the 1st data point (which is an object):', data[0]);
