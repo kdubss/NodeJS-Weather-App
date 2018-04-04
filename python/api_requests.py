@@ -50,7 +50,7 @@ def showForecastRequestDocs():
             - deprecated (use timezone, instead)
 
         > 'currently'
-            - SINGLE data point containing the current weather conditions
+        - SINGLE data point containing the current weather conditions
             at the requested location
 
         > 'minutely'
