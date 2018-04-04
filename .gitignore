@@ -6,3 +6,4 @@ local_settings.py
 *.ropeproject
 /d3/js/d3/*
 /duck-typing
+*.csv
