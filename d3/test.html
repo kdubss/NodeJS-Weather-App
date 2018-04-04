@@ -27,6 +27,28 @@
       // Variable to format the datetime object column of the imported csv data:
       const parseDate = d3.time.format(%d-%b %H:00);
 
+      // Setting the ranges of y and x axis':
+      // min./max. point of the x-range
+      const x = d3.time.scale().range([0, width])
+      // min./max. point of the y-range:
+      // BC the y coords in D3 are arranged from 'highest --> lowest' values
+      const y = d3.scale.linear().range([height, 0]);
+
+      // Defining the line:
+      const valueLine = d3.svg.line()
+        .x((d) => return x(d.datetime))
+
+      // Defining the axis:
+      const xAxis = d3.svg.axis()
+        .scale(x)
+        .orient('bottom')
+        .ticks(5);
+
+      const yAxis = d3.svg.axis()
+        .scale(y)
+        .orient('left')
+        .ticks(5);
+
       // Importing Forecast .csv data & formatting the temperature value from
       // strings to numerical values
       d3.csv(path2file + fname, (data) => {
@@ -42,6 +64,8 @@
         });
         // Value types properly converted
         console.log('Converted type for the 1st data point (which is an object):', data[0]);
+
+        
       });
     </script>
   </body>
