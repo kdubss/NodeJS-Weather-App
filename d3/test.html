@@ -1,0 +1,31 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Testing D3</title>
+  </head>
+
+  <body>
+    <!-- Load D3.js library -->
+    <script src='https://d3js.org/d3.v4.min.js'></script>
+    <script>
+      // Importing .csv temperature data.
+      const path2file = './csv/';
+      const fname = 'forecast-hourly-temp.csv';
+
+      d3.csv(path2file + fname, (data) => {
+        // First data point from the returned data object
+        console.log('First data point in returned array:', data[0]);
+        console.log('Date of first data point:', data[0].date, 'temperature:', data[0].temperature);
+        // Since the temperature values are all strings,
+        // --> manual type conversion
+        //   - Will use the unary operator
+        data.forEach((d) => {
+          d.temperature = +d.temperature;
+        });
+        // Value types properly converted
+        console.log('Converted type for the 1st data point (which is an object):', data[0]);
+      });
+    </script>
+  </body>
+</html>
