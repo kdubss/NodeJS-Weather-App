@@ -57,7 +57,7 @@ def plotForecastedHourlyData(forecast_hourly, time_machine_hourly):
         )
         legend.get_frame().set_facecolor('khaki')
     fig.show()
-    fig.savefig('figs/test.svg')
+    fig.savefig('figs/test.png')
 
 if __name__ == '__main__':
 
