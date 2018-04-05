@@ -75,8 +75,16 @@ module, which in this case, are human-readable reference marks for scales!');
           .attr('transform', 'rotate(-90)')
           .attr('y', 6)
           .attr('dy', '0.71em')
+          .attr('text-anchor', 'end')
           .text('price ($)');
 
-
+      g.append('path')
+          .datum(data)
+          .attr('fill', 'none')
+          .attr('stroke', 'steelblue')
+          .attr('stroke-linejoin', 'round')
+          .attr('stroke-linecap', 'round')
+          .attr('stroke-width', 1.5)
+          .attr('d', line);
     }
   });
