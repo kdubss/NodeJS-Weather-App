@@ -5,79 +5,70 @@
   <head>
     <meta charset='utf-8'>
     <title>Test: Rendering DarkSky Data w/ D3</title>
-    <script type='text/javascript' src='./learn/d3.v4.js'></script>
+    <script type='text/javascript' src="../js/d3.v4.js"></script>
   </head>
 
   <body>
 
-    <h1>Test: Rendering DarkSky API Temperature Data w/ <code>D3.js</code></h1>
-    <h2>12:00:00 April 04 to 12:00:00 April 6, 2018</h2>
-    <hr><br>
-    <div id='container'>
-      <svg width='960' height='500'></svg>
-    </div>
-    <!-- <script type='text/javascript' src='testing-dsky-d3.js'></script> -->
+    <svg width='960' height='500'></svg>
 
     <script>
+      const svg = d3.select('svg'),
+            margin = {top: 20, right: 20, bottom: 30, left: 50},
+            width = +svg.attr('width') - margin.left - margin.right,
+            height = +svg.attr('height') - margin.top - margin.bottom,
+            g = svg.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-      var svg = d3.select("svg"),
-          margin = {top: 20, right: 20, bottom: 30, left: 50},
-          width = +svg.attr("width") - margin.left - margin.right,
-          height = +svg.attr("height") - margin.top - margin.bottom,
-          g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      const parseTime = d3.timeParse('%Y-%m-%d %H:%M:%S');
 
-      var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
+      const x = d3.scaleTime()
+            .rangeRound([0, width]);
 
-      var x = d3.scaleTime()
-        .rangeRound([0, width]);
+      const y = d3.scaleLinear()
+            .rangeRound([height, 0]);
 
-      var y = d3.scaleLinear()
-        .rangeRound([height, 0]);
+      const line = d3.line()
+            .x((d) => { return x(d.date); })
+            .y((d) => { return y(d.temperature); });
 
-      var line = d3.line()
-        .x(function(d) { return x(d.date); })
-        .y(function(d) { return y(d.temp); });
-
-      d3.csv("./csv/forecast-hourly-temp.csv", function(d) {
-        d.date = parseTime(d.datetime);
-        d.temp = +d.temperature;
+      d3.csv('./data/forecast-hourly-temp.csv', (d) => {
+        d.date = parseTime(d.date);
+        d.temperature = +d.temperature;
         return d;
-        }, function(error, data) {
-          if (error) throw error;
+      }, (err, data) => {
+        if (err) throw err;
 
-          x.domain(d3.extent(data, function(d) { return d.date; }));
-          y.domain(d3.extent(data, function(d) { return d.temp; }));
+        console.log(data);
+        x.domain(d3.extent(data, (d) => { return d.date; }));
+        y.domain(d3.extent(data, (d) => { return d.temperature; }));
 
-          g.append("g")
-              .attr("transform", "translate(0," + height + ")")
-              .call(d3.axisBottom(x))
-            .select(".domain")
-              .remove();
+        g.append('g')
+            .attr('transform', 'translate(0,' + height + ')')
+            .call(d3.axisBottom(x))
+          .select('.domain')
+            .remove();
 
-          g.append("g")
-              .call(d3.axisLeft(y))
-            .append("text")
-              .attr("fill", "#000")
-              .attr("transform", "rotate(-90)")
-              .attr("y", 6)
-              .attr("dy", "0.71em")
-              .attr("text-anchor", "end")
-              .text("Temperature (deg.C)");
+        g.append('g')
+            .call(d3.axisLeft(y))
+          .append('text')
+            .attr('fill', '#000')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 6)
+            .attr('dy', '0.71em')
+            .attr('text-anchor', 'end')
+            .text('Temperature (deg.F)');
 
-          g.append("path")
-              .datum(data)
-              .attr("fill", "none")
-              .attr("stroke", "steelblue")
-              .attr("stroke-linejoin", "round")
-              .attr("stroke-linecap", "round")
-              .attr("stroke-width", 1.5)
-              .attr("d", line);
+        g.append('path')
+            .datum(data)
+            .attr('fill', 'none')
+            .attr('stroke', 'steelblue')
+            .attr('stroke-linejoin', 'round')
+            .attr('stroke-linecap', 'round')
+            .attr('stroke-width', 1.5)
+            .attr('d', line);
       });
 
-
-
     </script>
-
   </body>
 
 
