@@ -38,6 +38,16 @@ d3.csv(path2File + fname_forecast)
             g = svg.append('g')
                       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
+      const x = d3.scaleTime()
+                  .rangeRound([minDate, maxDate])
+                  .domain([minDate, maxDate]);
+      const y = d3.scaleLinear()
+                  .rangeRound([height, 0])
+                  .domain([height, 0])
+
+      console.log('\n----\nx-axis range:', x);
+      console.log('y-range:', y, '\n----');
+
       
 
     }
