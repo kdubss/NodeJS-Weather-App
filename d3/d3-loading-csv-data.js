@@ -50,6 +50,13 @@ d3.csv('./csv/forecast-hourly-temp.csv')
                      .y((d) => { return y(d.temperature); });
 
       chartGroup.append('path')
-                .attr('d', line(data));)
+                .attr('d', line(data));
+      chartGroup.append('g')
+                .attr('class', 'x axis')
+                .attr('transform', 'translate(0,'+height+')')
+                .call(xAxis);
+      chartGroup.append('g')
+                .attr('class', 'y axis')
+                .call(yAxis);
     }
   });
