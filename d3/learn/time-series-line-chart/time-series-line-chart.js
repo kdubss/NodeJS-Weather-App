@@ -14,6 +14,8 @@ d3.tsv(fname)
     if (err) {
       console.log('\nErrors:\n', err);
     } else {
+      console.log(data);
+
       // Setting axis-ranges:
       const minDate = d3.min(data, (d) => { return d.date; });
       const maxDate = d3.max(data, (d) => { return d.date; });
