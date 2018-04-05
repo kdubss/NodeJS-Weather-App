@@ -7,7 +7,7 @@ const parseDateTime = d3.timeParse('%Y-%m-%d %H:%M:%S');
 d3.csv(path2File + fname_forecast)
   .row((data) => {
     return {
-      date: parseDateTime(data.date),
+      date: parseDateTime(data.datetime),
       temp: data.temperature
     }
   })
