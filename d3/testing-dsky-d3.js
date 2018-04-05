@@ -8,7 +8,7 @@ d3.csv(path2File + fname_forecast)
   .row((data) => {
     return {
       date: parseDateTime(data.datetime),
-      temp: data.temperature
+      temp: +data.temperature
     }
   })
   .get((err, data) => {
@@ -48,7 +48,34 @@ d3.csv(path2File + fname_forecast)
       console.log('\n----\nx-axis range:', x);
       console.log('y-range:', y, '\n----');
 
-      
+      const line = d3.line()
+                     .x((d) => { return x(d.date); })
+                     .y((d) => { return y(d.temp); });
+
+      g.append('g')
+          .attr('transform', 'translate(0,' + height + ')')
+          .call(d3.axisBottom(x))
+        .select('.domain')
+          .remove();
+
+      g.append('g')
+          .call(d3.axisLeft(y))
+        .append('text')
+          .attr('fill', '#000')
+          .attr('transform', 'rotate(-90)')
+          .attr('y', 6)
+          .attr('dy', '0.71em')
+          .attr('text-anchor', 'end')
+          .text('Temperature (degC)');
+
+      g.append('path')
+          .datum(data)
+          .attr('fill', 'none')
+          .attr('stroke', 'steelblue')
+          .attr('stroke-linejoin', 'round')
+          .attr('stroke-linecap', 'round')
+          .attr('stroke-width', 1.5)
+          .attr('d', line);
 
     }
   });
