@@ -7,3 +7,4 @@ local_settings.py
 /d3/js/d3/*
 /duck-typing
 *.csv
+d3.v4.js
