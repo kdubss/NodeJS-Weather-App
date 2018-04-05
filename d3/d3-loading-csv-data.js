@@ -36,7 +36,20 @@ d3.csv('./csv/forecast-hourly-temp.csv')
       const yAxis = d3.axisLeft(y); // defining y-ax with the y-scaling (see above)
       const xAxis = d3.axisBottom(x); // defining the x-ax with the x-scaling (see above)
 
-      
+      // Defining the SVG element:
+      const svg = d3.select('body')
+                    .append('svg')
+                      .attr('height', '80%')
+                      .attr('width', '80%');
+      const chartGroup = svg.append('g') // 'g' for 'group'
+                            .attr('transform', 'translate(50, 50)');
 
+      // Define the line:
+      const line = d3.line()
+                     .x((d) => { return x(d.date); })
+                     .y((d) => { return y(d.temperature); });
+
+      chartGroup.append('path')
+                .attr('d', line(data));)
     }
   });
