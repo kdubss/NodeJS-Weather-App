@@ -222,6 +222,6 @@ def convertUnixTime2PST(unix_timestamp):
     '''
     Function to convert unix time stamp to PST time (localy here, in Vancouver)
     '''
-    pretty_time = time.strftime('%d-%b-%y %H:%M:%S',
+    pretty_time = time.strftime('%Y-%m-%d-%H:%M:%S',
                                 time.localtime(unix_timestamp))
     return pretty_time
