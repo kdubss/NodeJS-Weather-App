@@ -8,3 +8,5 @@ local_settings.py
 /duck-typing
 *.csv
 d3.v4.js
+# Pyhon cache
+__pycache__

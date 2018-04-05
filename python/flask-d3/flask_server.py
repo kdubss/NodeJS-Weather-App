@@ -31,14 +31,9 @@ def server_err(err):
 def about():
     return render_template('about.html')
 
-@app.route('/temperature')
+@app.route('/forecast_temperature')
 def show_temp_d3():
-    forecast = dsky.getForecastDataFromDarkSkyAPI('Vancouver')
-    historical = dsky.getTimeMachineDataFromDarkSkyAPI('Vancouver', '2018-04-01')
-    forecast = forecast.json()
-    historical = historical.json()
-    current = forecast['currently']
-    return 'Current weather conditions: %s' % current['summary']
+    return render_template('testing-dsky-d3.html')
 
 if __name__ == '__main__':
 
