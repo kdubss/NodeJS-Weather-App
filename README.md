@@ -39,6 +39,12 @@
   - The *forecast* request was made @ ~ 14:00 today (April 3), which means there will be an overlap of > 7 hours.
     - This can be countered by either __a.__ cutting a slice of the data from the forecast data series, or __b.__ cutting a slice of the time-machine data series...  (*more to come*)
 
+![D3 Render](https://github.com/kdubss/NodeJS-Weather-App/blob/master/imgs/forecast-temperature-d3.png_
+)
+
+  - The figure above is a rendered D3 line chart of the temperature data fetched from a forecast request for the time of April 4, 2018 at 11:00 am to April 7, 2018 at 11:00 am.
+  - The __next step__ is to serve up this page from a Flask server end-point!
+
 ### Data Parameters (found at *[forecast.io](https://darksky.net)*) - Hourly Data
 (for full details on request response formats, see [here](https://darksky.net/dev/docs#response-format))
 
