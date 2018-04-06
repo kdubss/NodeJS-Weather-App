@@ -134,8 +134,12 @@ def getDataframeFromSeriesData(forecast_series, time_machine_series):
         1. 'temp_df'  ::  - Pandas.core.frame.DataFrame object containing the
                           two temperature data series' (forecast & time machine)
     '''
-    print('\nForecast series:\n', forecast_series)
-    print('\nTime machine series:\n', time_machine_series)
+    temp_df = pd.concat(
+        [forecast_series, time_machine_series],
+        axis = 1,
+    )
+    temp_df.columns = ['forecast', 'hindcast']
+    return temp_df
 
 def makeSave2Folder(directoy_or_path, dir_name):
     '''
