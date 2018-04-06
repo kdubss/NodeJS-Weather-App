@@ -13,8 +13,8 @@ import api_requests as api
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
+@app.route('/temperature')
+def getForecastAndHindcastTemperatureD3():
     '''
     Function to call when fetching the index endpoint.
     '''
