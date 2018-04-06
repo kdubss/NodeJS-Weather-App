@@ -136,10 +136,12 @@ def getDataframeFromSeriesData(forecast_series, time_machine_series):
     '''
     temp_df = pd.concat(
         [forecast_series, time_machine_series],
-        axis = 1,
+        axis = 1
     )
     temp_df.columns = ['forecast', 'hindcast']
     temp_df = temp_df[temp_df.forecast != temp_df.hindcast]
+    date_col = temp_df.index
+    temp_df['date'] = date_col
     return temp_df
 
 def makeSave2Folder(directoy_or_path, dir_name):

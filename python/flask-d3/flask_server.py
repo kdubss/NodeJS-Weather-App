@@ -1,39 +1,30 @@
-# ./weather-app/python/flask_server.py
-import os, sys
+# !/usr/bin/python
+# ./weather-app/python/flask-d3/app.py
+
+import json
+import pandas as pd
+import sys, os
 import datetime as dt
 
-from flask import Flask, request, session, flash, render_template, redirect
+from flask import Flask, render_template
 
 sys.path.insert(0, '../')
-import api_requests as dsky
-
-from geocode import getLatLon
+import api_requests as api
 
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
-    return render_template('index.html')
-
-@app.errorhandler(404)
-def url_err(err):
-    return '''
-        Invalid URL end-point!
+def index():
     '''
-
-@app.errorhandler(500)
-def server_err(err):
-    return '''
-        Internal server error!
+    Function to call when fetching the index endpoint.
     '''
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/forecast_temperature')
-def show_temp_d3():
-    return render_template('testing-dsky-d3.html')
+    path2data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
+    fname = 'data.csv'
+    df = pd.read_csv(path2data + fname, sep = ',')
+    temp_data = df.to_dict(orient = 'records')
+    temp_data = json.dumps(temp_data, indent = 2)
+    data = { 'temp_data': temp_data }
+    return render_template('test.html', data = data)
 
 if __name__ == '__main__':
 
