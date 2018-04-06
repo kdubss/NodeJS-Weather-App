@@ -62,12 +62,15 @@
 
       // Defining the Forecast temperature data:
       const forecastLine = d3.svg.line()
+            .defined((d) => { return d; })
             .x((d) => { return x(d.date); })
             .y((d) => { return y(d.forecast); });
 
       // Defining the historical Hindcast temperature data:
       const hindcastLine = d3.svg.line()
-            .x((d) => { return x(d.date); });
+            .defined((d) => {return d; })
+            .x((d) => { return x(d.date); })
+            .y((d) => { return y(d.hindcast); });
 
       // Adding the SVG canvas:
       const svg = d3.select('#graphDiv')
@@ -82,13 +85,14 @@
         data.forEach((d) => {
           d.date = parseDate(d.date);
           d.forecast = +d.forecast;
+          d.hindcast = +d.hindcast;
         });
 
         // Scale the data's range:
-        x.domain(d3.extent(data, (d) => { return d.Date; }));
+        x.domain(d3.extent(data, (d) => { return d.date; }));
         y.domain([
           d3.min(data, (d) => {
-            return Math.min(d.forecast, d.Hindcast);
+            return Math.min(d.forecast, d.hindcast);
           }),
           d3.max(data, (d) => {
             return Math.max(d.forecast, d.hindcast)
