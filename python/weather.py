@@ -117,6 +117,26 @@ def getTimeMachineHourlyTemperatureSeries(hourly_weather_list):
     )
     return hourly_series
 
+def getDataframeFromSeriesData(forecast_series, time_machine_series):
+    '''
+    Function to create a Pandas.core.frame.DataFrame object from two
+    Pandas.core.series.Series data objects.
+
+    INPUT:
+        1. 'forecast_series'  ::  - Pandas.core.series.Series object containing
+                                  forecasted temperature series with the
+                                  date of occurrences as the series indices.
+        2. 'time_machine_series'  ::  - Pandas.core.series.Series object
+                                      containing time-machine temperature series
+                                      with the date of occurrences of the Series
+                                      indices.
+    OUTPUT:
+        1. 'temp_df'  ::  - Pandas.core.frame.DataFrame object containing the
+                          two temperature data series' (forecast & time machine)
+    '''
+    print('\nForecast series:\n', forecast_series)
+    print('\nTime machine series:\n', time_machine_series)
+
 def makeSave2Folder(directoy_or_path, dir_name):
     '''
     Function to create a directory (path) in which to save stuff (i.e. data, figs)
