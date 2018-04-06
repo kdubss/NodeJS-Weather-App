@@ -5,7 +5,7 @@
   <head>
     <meta charset='utf-8'>
     <title>Test: Rendering DarkSky Data w/ D3</title>
-    <script type='text/javascript' src='./learn/d3.v4.js'></script>
+    <script type='text/javascript' src='../time-series-line-chart/d3.v4.js'></script>
   </head>
 
   <body>
@@ -26,53 +26,54 @@
           height = +svg.attr("height") - margin.top - margin.bottom,
           g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
-
-      var x = d3.scaleTime()
-        .rangeRound([0, width]);
-
-      var y = d3.scaleLinear()
-        .rangeRound([height, 0]);
-
-      var line = d3.line()
-        .x(function(d) { return x(d.date); })
-        .y(function(d) { return y(d.temp); });
-
-      d3.csv("./csv/forecast-hourly-temp.csv", function(d) {
-        d.date = parseTime(d.datetime);
-        d.temp = +d.temperature;
-        return d;
-        }, function(error, data) {
-          if (error) throw error;
-
-          x.domain(d3.extent(data, function(d) { return d.date; }));
-          y.domain(d3.extent(data, function(d) { return d.temp; }));
-
-          g.append("g")
-              .attr("transform", "translate(0," + height + ")")
-              .call(d3.axisBottom(x))
-            .select(".domain")
-              .remove();
-
-          g.append("g")
-              .call(d3.axisLeft(y))
-            .append("text")
-              .attr("fill", "#000")
-              .attr("transform", "rotate(-90)")
-              .attr("y", 6)
-              .attr("dy", "0.71em")
-              .attr("text-anchor", "end")
-              .text("Temperature (deg.C)");
-
-          g.append("path")
-              .datum(data)
-              .attr("fill", "none")
-              .attr("stroke", "steelblue")
-              .attr("stroke-linejoin", "round")
-              .attr("stroke-linecap", "round")
-              .attr("stroke-width", 1.5)
-              .attr("d", line);
-      });
+      console.log('\nSVG obj:', svg);
+      // var parseTime = d3.timeParse("%Y-%m-%d %H:%M:%S");
+      //
+      // var x = d3.scaleTime()
+      //   .rangeRound([0, width]);
+      //
+      // var y = d3.scaleLinear()
+      //   .rangeRound([height, 0]);
+      //
+      // var line = d3.line()
+      //   .x(function(d) { return x(d.date); })
+      //   .y(function(d) { return y(d.temp); });
+      //
+      // d3.csv("./csv/forecast-hourly-temp.csv", function(d) {
+      //   d.date = parseTime(d.datetime);
+      //   d.temp = +d.temperature;
+      //   return d;
+      //   }, function(error, data) {
+      //     if (error) throw error;
+      //
+      //     x.domain(d3.extent(data, function(d) { return d.date; }));
+      //     y.domain(d3.extent(data, function(d) { return d.temp; }));
+      //
+      //     g.append("g")
+      //         .attr("transform", "translate(0," + height + ")")
+      //         .call(d3.axisBottom(x))
+      //       .select(".domain")
+      //         .remove();
+      //
+      //     g.append("g")
+      //         .call(d3.axisLeft(y))
+      //       .append("text")
+      //         .attr("fill", "#000")
+      //         .attr("transform", "rotate(-90)")
+      //         .attr("y", 6)
+      //         .attr("dy", "0.71em")
+      //         .attr("text-anchor", "end")
+      //         .text("Temperature (deg.C)");
+      //
+      //     g.append("path")
+      //         .datum(data)
+      //         .attr("fill", "none")
+      //         .attr("stroke", "steelblue")
+      //         .attr("stroke-linejoin", "round")
+      //         .attr("stroke-linecap", "round")
+      //         .attr("stroke-width", 1.5)
+      //         .attr("d", line);
+      // });
 
 
 
