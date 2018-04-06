@@ -18,13 +18,13 @@ def index():
     '''
     Function to call when fetching the index endpoint.
     '''
-    path2data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
-    fname = 'data.csv'
-    df = pd.read_csv(path2data + fname, sep = ',')
-    temp_data = df.to_dict(orient = 'records')
-    temp_data = json.dumps(temp_data, indent = 2)
-    data = { 'temp_data': temp_data }
-    return render_template('test.html', data = data)
+    # path2data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
+    # fname = 'data.csv'
+    # df = pd.read_csv(path2data + fname, sep = ',')
+    # temp_data = df.to_dict(orient = 'records')
+    # temp_data = json.dumps(temp_data, indent = 2)
+    # data = { 'temp_data': temp_data }
+    return render_template('test.html') # data = data)
 
 if __name__ == '__main__':
 

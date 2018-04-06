@@ -34,9 +34,184 @@
     <script type='text/javascript' src='https://d3js.org/d3.v3.min.js'></script>
     <script>
 
-      // Importing the data from Flask end-point into the html template
-      const graphData = {{ data.temp_data | safe }}
-      console.log(graphData);
+
+      const graphData = [
+        {
+          "forecast": "",
+          "hindcast": "46.93",
+          "date": "2018-04-06 00:00:00"
+        },
+        {
+          "forecast": "",
+          "hindcast": "46.85",
+          "date": "2018-04-06 01:00:00"
+        },
+        {
+          "forecast": "",
+          "hindcast": "47.13",
+          "date": "2018-04-06 02:00:00"
+        },
+        {
+          "forecast": "",
+          "hindcast": "47.03",
+          "date": "2018-04-06 03:00:00"
+        },
+        {
+          "forecast": "",
+          "hindcast": "46.77",
+          "date": "2018-04-06 04:00:00"
+        },
+        {
+          "forecast": "",
+          "hindcast": "46.98",
+          "date": "2018-04-06 05:00:00"
+        },
+        {
+          "forecast": "",
+          "hindcast": "46.79",
+          "date": "2018-04-06 06:00:00"
+        },
+        {
+          "forecast":"46.86",
+          "hindcast":"",
+          "date":"2018-04-06 07:00:00"
+        },
+        {
+          "forecast":"47.3",
+          "hindcast":"",
+          "date":"2018-04-06 08:00:00"
+        },
+        {
+          "forecast":"47.99",
+          "hindcast":"",
+          "date":"2018-04-06 09:00:00"
+        },
+        {
+          "forecast":"48.93",
+          "hindcast":"",
+          "date":"2018-04-06 10:00:00"
+        },
+        {
+          "forecast":"49.88",
+          "hindcast":"",
+          "date":"2018-04-06 11:00:00"
+        },
+        {
+          "forecast":"51.44",
+          "hindcast":"",
+          "date":"2018-04-06 12:00:00"
+        },
+        {
+          "forecast":"53.01",
+          "hindcast":"",
+          "date":"2018-04-06 13:00:00"
+        },
+        {
+          "forecast":"54.67",
+          "hindcast":"",
+          "date":"2018-04-06 14:00:00"
+        },
+        {
+          "forecast":"56.03",
+          "hindcast":"",
+          "date":"2018-04-06 15:00:00"
+        },
+        {
+          "forecast":"57.3",
+          "hindcast":"",
+          "date":"2018-04-06 16:00:00"
+        },
+        {
+          "forecast":"57.82",
+          "hindcast":"",
+          "date":"2018-04-06 17:00:00"
+        },
+        {
+          "forecast":"57.51",
+          "hindcast":"",
+          "date":"2018-04-06 18:00:00"
+        },
+        {
+          "forecast":"56.5",
+          "hindcast":"",
+          "date":"2018-04-06 19:00:00"
+        },
+        {
+          "forecast":"55.24",
+          "hindcast":"",
+          "date":"2018-04-06 20:00:00"
+        },
+        {
+          "forecast":"54.18",
+          "hindcast":"",
+          "date":"2018-04-06 21:00:00"
+        },
+        {
+          "forecast":"53.08",
+          "hindcast":"",
+          "date":"2018-04-06 22:00:00"
+        },
+        {
+          "forecast":"52.21",
+          "hindcast":"",
+          "date":"2018-04-06 23:00:00"
+        },
+        {
+          "forecast": "51.44",
+          "hindcast": "",
+          "date": "2018-04-07 00:00:00"
+        },
+        {
+          "forecast": "50.72",
+          "hindcast": "",
+          "date": "2018-04-07 01:00:00"
+        },
+        {
+          "forecast": "50.05",
+          "hindcast": "",
+          "date": "2018-04-07 02:00:00"
+        },
+        {
+          "forecast": "49.38",
+          "hindcast": "",
+          "date": "2018-04-07 03:00:00"
+        },
+        {
+          "forecast": "48.82",
+          "hindcast": "",
+          "date": "2018-04-07 04:00:00"
+        },
+        {
+          "forecast": "48.33",
+          "hindcast": "",
+          "date": "2018-04-07 05:00:00"
+        },
+        {
+          "forecast": "48.08",
+          "hindcast": "",
+          "date": "2018-04-07 06:00:00"
+        },
+        {
+          "forecast": "47.84",
+          "hindcast": "",
+          "date": "2018-04-07 07:00:00"
+        },
+        {
+          "forecast": "47.88",
+          "hindcast": "",
+          "date": "2018-04-07 08:00:00"
+        },
+        {
+          "forecast": "48.11",
+          "hindcast": "",
+          "date": "2018-04-07 09:00:00"
+        },
+        {
+          "forecast": "48.6",
+          "hindcast": "",
+          "date": "2018-04-07 10:00:00"
+        },
+      ];
 
       // Set dimensions of SVG object:
       const margin = { top: 30, right: 50, bottom: 30, left: 50 };
@@ -62,15 +237,15 @@
 
       // Defining the Forecast temperature data:
       const forecastLine = d3.svg.line()
-            .defined((d) => { return d; })
+	        .defined( function(d) { return d.forecast; })
             .x((d) => { return x(d.date); })
             .y((d) => { return y(d.forecast); });
 
       // Defining the historical Hindcast temperature data:
       const hindcastLine = d3.svg.line()
-            .defined((d) => {return d; })
+			.defined( function(d) { return d.hindcast; })
             .x((d) => { return x(d.date); })
-            .y((d) => { return y(d.hindcast); });
+			.y((d) => { return y(d.hindcast); })
 
       // Adding the SVG canvas:
       const svg = d3.select('#graphDiv')
@@ -85,7 +260,6 @@
         data.forEach((d) => {
           d.date = parseDate(d.date);
           d.forecast = +d.forecast;
-          d.hindcast = +d.hindcast;
         });
 
         // Scale the data's range:
@@ -123,22 +297,6 @@
           .style('fill', 'none')
           .style('stroke-dasharray', ('3, 3'))
           .attr('d', hindcastLine(data));
-
-        // Text:
-        // a. Forecast temperature:
-        svg.append('text')
-          .attr('transform', 'translate(' + (figWidth + 3) + ',' + y(graphData[0].forecast) + ')')
-          .attr('dy', '0.35em')
-          .attr('text-anchor', 'start')
-          .style('fill', 'green')
-          .text('Forecast Temp');
-
-        // b. Hindcast historical temperature:
-        svg.append('text')
-          .attr('transform', 'translate(' + (figWidth + 3) + ',' + y(graphData[0].hindcast) + ')')
-          .attr('dy', '0.35em')
-          .attr('fill', 'red')
-          .text('Historical Temp');
 
       };
 
