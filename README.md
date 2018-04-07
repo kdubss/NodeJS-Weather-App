@@ -21,10 +21,12 @@
   - To run the Flask server, `cd` into `python/flask-d3/` from the projects' root directory.
   - Once there, run `python flask_server.py` to start the server (on `localhost::8080`)
   - __*End-points*__,
-    - `/`: Index/home page (rendering `templates/index.html`)
+    - __`/`__: Index/home page (rendering `templates/index.html`)
       - The `/` end-point currently renders an `<ul>` element, listing `href` links for different parts of the project
         - For example, a listing of temperature parameters links directly to the D3 chart of that weather parameter (<i>i.e.</i> clicking on `Temperature` will take you to a static `html` page for the D3)
-    - `/about`: Gives a summary of what the project is all about (<i>i.e.</i> what tech stack is used, what API is being used, etc.)
+    - __`/about`__: Gives a summary of what the project is all about (<i>i.e.</i> what tech stack is used, what API is being used, etc.)
+    - __`/temperature`__: Renders the temperature data for *both* the __forecast__ and __time-machine__ requests to the DarkSky API. *Currently, there are some problems encoutered with this end-point (refer to the [question posted on stackoverflow](https://stackoverflow.com/questions/49699408/how-do-i-deal-with-occurrences-of-nan-in-d3?noredirect=1#comment86413836_49699408)), which I'm currently attempting to solve*.
+    - __`/forecast`__: Renders the static `D3` `HTML` page, producing a figure of the temperature data returned from a __forecast__ request to the DarkSky API.  Forecast time spans from __<u>2018-04-06 17:00:00 &#x2192; 2018-04-08 17:00:00</u>__.
 
 ## D3.js charts
 
@@ -43,6 +45,21 @@
 
   - The figure above is a rendered D3 line chart of the temperature data fetched from a forecast request for the time of April 4, 2018 at 11:00 am to April 7, 2018 at 11:00 am.
   - The __next step__ is to serve up this page from a Flask server end-point!
+
+![multitemp](https://github.com/kdubss/NodeJS-Weather-App/blob/feature/d3/imgs/multitemp.png)
+
+  - From the figure above,
+    - Since the data was not rendering properly (despite being successfully passed from server to html), I hard-coded the data into the HTML page to produce this figure. *I'll have to explore the code and read up more, on `D3` to hopefully solve the issue*.
+
+![forecast](https://github.com/kdubss/NodeJS-Weather-App/blob/feature/d3/imgs/forecast.png)
+
+  - The weather temperature data returned from the __forecast__ request.
+  - Forecast time range spans from *<u>2018-04-06 17:00:00</u> to <u>2018-04-08 17:00:00</u>*
+
+![hindcast](https://github.com/kdubss/NodeJS-Weather-App/blob/feature/d3/imgs/hindcast.png)
+
+  - The weather temperature data returned from the __time-machine__ request.
+  - Hindcast time range spans from *<u>2018-04-05 00:00:00 to 2018-04-05 23:00:00</u>*
 
 ### Data Parameters (found at *[forecast.io](https://darksky.net)*) - Hourly Data
 (for full details on request response formats, see [here](https://darksky.net/dev/docs#response-format))
