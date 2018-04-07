@@ -119,6 +119,29 @@ def getTimeMachineHourlyTemperatureSeries(hourly_weather_list):
     hourly_series = getCelsiusFromFarenheit(hourly_series)
     return hourly_series
 
+def convertSeriesData2DataFrame(series_data):
+    '''
+    Converting a Pandas.core.series.Series data object (with datetimes) as indices
+    into a Pandas.core.frame.DataFrame object with the datetimes indices as a
+    separate 'date' column in the dataframe.
+
+    INPUT:
+        1. 'series_data'  ::  - Pandas.core.series.Series data object with
+                              temperature as the value and datetimes as the
+                              indices
+    OUTPUT:
+        1.  'df'  ::  - Pandas.core.frame.DataFrame object containing 2 columns.
+                      - Col 1: 'date' - the datetime indices on the series_data
+                      object
+                      - Col 2: 'temp' - the temperature values on the series data`
+                      object
+    '''
+    date_list = series_data.index
+    temp_list = series_data.values
+    df = pd.DataFrame([date_list, temp_list]).transpose()
+    df.columns = ['date', 'temp']
+    return df
+
 def getDataframeFromSeriesData(forecast_series, time_machine_series):
     '''
     Function to create a Pandas.core.frame.DataFrame object from two
