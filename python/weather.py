@@ -206,8 +206,8 @@ def saveWeatherData2Csv(data_2_save, save_2_path, fname):
     fname = fname
     data_2_save.to_csv(
         save_2_path + '/' + fname,
-        index = True,
-        header = ['Temperature']
+        index = False,
+        header = ['date', 'temp']
     )
 
 if __name__ == '__main__':
@@ -266,13 +266,14 @@ end-point on the Flask server\n' % args.a)
         forecast_data = forecast_request.json()
         forecast_hourly_data = forecast_data['hourly']['data']
         forecast_hourly_series = getForecastHourlyTemperatureSeries(forecast_hourly_data)
-        saveWeatherData2Csv(forecast_hourly_series, 'flask-d3/data', 'forecast-hourly-temp.csv')
+        forecast_df = convertSeriesData2DataFrame(forecast_hourly_series)
+        saveWeatherData2Csv(forecast_df, 'flask-d3/data', 'forecast-hourly-temp.csv')
         print('\nFetching forecast weather data for %s\n(using the DarkSky API)\n' % args.a)
         print('\nThe following is the data that has been saved:\n',
-              forecast_hourly_series, 'Confirm this is the desired product and \
+              forecast_df, 'Confirm this is the desired product and \
 make necessary changes to code as needed\n')
 
-    if args.save2csv:
+    elif args.save2csv:
 
         print('\nFetching, parsing, and saveing weather data from the DarkSky\n\
 API to the \'csv/\' directory!\n')
