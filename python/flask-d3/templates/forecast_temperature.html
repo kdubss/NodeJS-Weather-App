@@ -28,6 +28,7 @@
 
   <body>
 
+    <h1>Hourly Temperature Data - Forecast Request</h1>
     <div id='graphDiv'></div>
 
     <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -84,12 +85,6 @@
           d3.max(data, (d) => { return Math.max(d.temp) })
         ]);
 
-        // Adding the Area path:
-        svg.append('path')
-          .datum(data)
-          .attr('class', 'area')
-          .attr('d', area)
-
         // Adding Forecaset Temp Path:
         svg.append('path')
           .style('stroke', 'green')
@@ -110,7 +105,7 @@
 
         // Adding Text:
         svg.append('text')
-          .attr('transform', 'translate(' + (figWidth + 3) + ',' + y(graphData[0].temp + ')')
+          .attr('transform', 'translate(' + (figWidth + 3) + ',' + y(graphData[0].temp) + ')')
           .attr('dy', '0.35em')
           .attr('text-anchor', 'end')
           .style('fill', 'green')
