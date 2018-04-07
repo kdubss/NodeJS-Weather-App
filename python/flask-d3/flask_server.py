@@ -71,7 +71,14 @@ def getHistoricalHindcastTemperatureD3():
     the data to ./templates/historical_temperature.html, in which the data will
     be rendered by D3.
     '''
-    return render_template('historical_temperature.html')
+    path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
+    fname = 'hindcast-hourly-data'
+    fname_fmt = '.csv'
+    df = pd.read_csv(path2Data + fname + fname_fmt)
+    hindcast_data = df.to_dict(orient = 'records')
+    hindcast_data = json.dumps(hindcast_data, indent = 2)
+    data = { 'hindcast_data': hindcast_data }
+    return render_template('historical_temperature.html', data = data)
 
 @app.route('/temperature')
 def getForecastAndHindcastTemperatureD3():
