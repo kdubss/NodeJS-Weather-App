@@ -48,6 +48,13 @@ def getIndexPage():
     '''
     return render_template('index.html')
 
+@app.route('/about')
+def getAboutPage():
+    '''
+    Renderin './templates/about.html'
+    '''
+    return render_template('about.html')
+
 @app.route('/forecast')
 def getForeacastTemperatureD3():
     '''
