@@ -77,6 +77,7 @@ def getForecastHourlyTemperatureSeries(hourly_weather_list):
         index = [parse(index) for index in timestamp_series_list],
         name = 'Forecasted hourly temperature data series'
     )
+    hourly_series = getCelsiusFromFarenheit(hourly_series)
     return hourly_series
 
 def getTimeMachineHourlyTemperatureSeries(hourly_weather_list):
@@ -113,8 +114,9 @@ def getTimeMachineHourlyTemperatureSeries(hourly_weather_list):
     hourly_series = pd.Series(
         data_series_list,
         index = [parse(index) for index in timestamp_series_list],
-        name = 'Time-machine hourly temperature data series'
+        name = 'Time-machine hourly emperature data series'
     )
+    hourly_series = getCelsiusFromFarenheit(hourly_series)
     return hourly_series
 
 def getDataframeFromSeriesData(forecast_series, time_machine_series):
@@ -222,8 +224,30 @@ if __name__ == '__main__':
         Time-machine Hindcast weather data (from Pandas.core.series.Series) \
         to a .csv file in the \'csv/\' directory.'
     )
+    parser.add_argument(
+        '--forecast_endpoint',
+        action = 'store_true',
+        help = 'Boolean trigger to prompt data-fetching and preparation for \
+the forecast request from the DarkSky API\.'
+    )
 
     args = parser.parse_args()
+
+    if args.forecast_endpoint and args.a:
+
+        print('\nFetching and parsing/prepping data for %s for the \'/forecast\' \
+end-point on the Flask server\n' % args.a)
+
+        makeSave2Folder('./flask-d3', 'data/')
+        forecast_request = dsky.getForecastDataFromDarkSkyAPI(args.a)
+        forecast_data = forecast_request.json()
+        forecast_hourly_data = forecast_data['hourly']['data']
+        forecast_hourly_series = getForecastHourlyTemperatureSeries(forecast_hourly_data)
+        saveWeatherData2Csv(forecast_hourly_series, 'flask-d3/data', 'forecast-hourly-temp.csv')
+        print('\nFetching forecast weather data for %s\n(using the DarkSky API)\n' % args.a)
+        print('\nThe following is the data that has been saved:\n',
+              forecast_hourly_series, 'Confirm this is the desired product and \
+make necessary changes to code as needed\n')
 
     if args.save2csv:
 
