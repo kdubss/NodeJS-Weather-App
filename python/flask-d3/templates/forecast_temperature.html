@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang='en'>
+
+  <head>
+    <meta charset='utf-8'>
+    <title>Forecast Temperature</title>
+    <style>
+      body {
+        font: 12px Arial;
+      }
+      path {
+        stroke-width: 2;
+        fill: none;
+      }
+      .axis path, .axis line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2;
+        shape-rendering: crispEdges;
+      }
+      .area {
+        fill: #F0F8FF;
+        stroke-width: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div id='graphDiv'></div>
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script>
+
+      // Accessing data passed from Flask server
+      const graphData = {{ data.forecast_data | safe }}
+
+      // Setting dimenesions of SVG:
+      const margin = { top: 30, right: 50, bottom: 30, left: 50 };
+      const svgWidth = 1000;
+      const svgHeight = 600;
+      const figWidth = svgWidth - margin.left - margin.right;
+      const figHeight = svgHeight - margin.top - margin.bottom;
+
+      // Parsing date / time:
+      const parseDate = d3.time.format('%Y-%m-%d %H:%M:%S').parse;
+
+      // Setting range of data:
+      const x = d3.time.scale().range([0, figWidth]);
+      const y = d3.scale.linear().range([figHeight, 0]);
+
+      // Defining the Axes:
+      
+
+    </script>
+
+  </body>
+
+</html>
