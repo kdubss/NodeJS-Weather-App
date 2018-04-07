@@ -51,7 +51,74 @@
       const y = d3.scale.linear().range([figHeight, 0]);
 
       // Defining the Axes:
-      
+      const xAxis = d3.svg.axis().scale(x)
+            .orient('bottom').ticks(5);
+      const yAxis = d3.svg.axis().scale(y)
+            .orient('left').ticks(5);
+
+      // Defining the data paths:
+      const forecast = d3.svg.line()
+          .x((d) => { return x(d.date); })
+          .y((d) => { return y(d.temp); });
+
+      // Adding the SVG canvas:
+      const svg = d3.select('#graphDiv')
+          .append('svg')
+            .attr('width', svgWidth)
+            .attr('height', svgHeight)
+          .append('g')
+            .attr('transform',
+              'translate(' + margin.left + ',' + margin.top + ')');
+
+      // Defining plot function:
+      const plot = (data) => {
+        data.forEach((d) => {
+          d.date = parseDate(d.date);
+          d.temp = +d.temp;
+        });
+
+        // Scaling the range of the data being plotted:
+        x.domain(d3.extent(data, (d) => { return d.date; }));
+        y.domain([
+          d3.min(data, (d) => { return Math.min(d.temp) }),
+          d3.max(data, (d) => { return Math.max(d.temp) })
+        ]);
+
+        // Adding the Area path:
+        svg.append('path')
+          .datum(data)
+          .attr('class', 'area')
+          .attr('d', area)
+
+        // Adding Forecaset Temp Path:
+        svg.append('path')
+          .style('stroke', 'green')
+          .style('fill', 'none')
+          .attr('class', 'line')
+          .attr('d', forecast(data));
+
+        // Adding X-Axis:
+        svg.append('g')
+          .attr('class', 'x axis')
+          .attr('transform', 'translate(0,' + figHeight + ')')
+            .call(xAxis);
+
+        // Adding Y-Axis:
+        svg.append('g')
+          .attr('class', 'y axis')
+            .call(yAxis);
+
+        // Adding Text:
+        svg.append('text')
+          .attr('transform', 'translate(' + (figWidth + 3) + ',' + y(graphData[0].temp + ')')
+          .attr('dy', '0.35em')
+          .attr('text-anchor', 'end')
+          .style('fill', 'green')
+          .text('Forecast');
+
+      };
+
+      plot(graphData);
 
     </script>
 
