@@ -1,0 +1,42 @@
+<!DOCTYPE>
+
+<html lang='en'>
+
+  <head>
+
+    <meta charset='utf-8'>
+    <title>Historical hindcast temperature data - Time Machine Request</title>
+    <style>
+      boxy {
+        font: 12px Arial;
+      }
+      path {
+        stroke-width: 2;
+        fill: none;
+      }
+      .axis path, .axis line {
+        fill: none
+        stroke: grey;
+        stroke-width: 1;
+        shape-rendering: crispEdges;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id='graphDiv'></div>
+
+    <script type='text/javascript' src='https://d3js.org/d3.v3.min.js'></script>
+    <script>
+
+      const graphData = {{ data.hindcast_data | safe }}
+
+      console.log(graphData)
+
+    </script>
+
+  </body>
+
+</html>

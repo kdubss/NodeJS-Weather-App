@@ -114,7 +114,7 @@ def getTimeMachineHourlyTemperatureSeries(hourly_weather_list):
     hourly_series = pd.Series(
         data_series_list,
         index = [parse(index) for index in timestamp_series_list],
-        name = 'Time-machine hourly emperature data series'
+        name = 'Time-machine hourly temperature data series'
     )
     hourly_series = getCelsiusFromFarenheit(hourly_series)
     return hourly_series
@@ -251,7 +251,13 @@ if __name__ == '__main__':
         '--forecast_endpoint',
         action = 'store_true',
         help = 'Boolean trigger to prompt data-fetching and preparation for \
-the forecast request from the DarkSky API\.'
+the forecast request from the DarkSky API.'
+    )
+    parser.add_argument(
+        '--hindcast_endpoint',
+        action = 'store_true',
+        help = 'Boolean trigger to prompt data-fetchin and preparation for \
+the historical hindcast request from the DarkSky API.'
     )
 
     args = parser.parse_args()
@@ -273,43 +279,26 @@ end-point on the Flask server\n' % args.a)
               forecast_df, 'Confirm this is the desired product and \
 make necessary changes to code as needed\n')
 
-    elif args.save2csv:
+    elif args.hindcast_endpoint and args.a and args.time:
 
-        print('\nFetching, parsing, and saveing weather data from the DarkSky\n\
-API to the \'csv/\' directory!\n')
-        if args.forecast and args.a:
+        print('\nFetching and parsing/prepping data for %s for the \'/hindcast\' \
+end-point on the Flask server\n' % args.a)
 
-            makeSave2Folder('./', 'csv/')
-            print('\nSaving Forecast %s weather data for %s in \'csv/\' directory!\n' % \
-                  ('temperature', args.a))
-            forecast_request = dsky.getForecastDataFromDarkSkyAPI(args.a)
-            forecast_data = forecast_request.json()
-            forecast_hourly_data = forecast_data['hourly']['data']
-            forecast_hourly_series = getForecastHourlyTemperatureSeries(forecast_hourly_data)
-            saveWeatherData2Csv(forecast_hourly_series, 'csv', 'forecast-hourly-temp.csv')
-            print('\nFetching forecast weather data for %s\n(using the DarkSky API)\n' % args.a)
-            print('\nThe following is the data that has been saved:\n',
-                  forecast_hourly_series, 'Confirm this is the desired product and \
+        makeSave2Folder('./flask-d3', 'data/')
+        hindcast_request = dsky.getTimeMachineDataFromDarkSkyAPI(args.a, args.time)
+        hindcast_data = hindcast_request.json()
+        hindcast_hourly_data = hindcast_data['hourly']['data']
+        hindcast_hourly_series = getTimeMachineHourlyTemperatureSeries(hindcast_hourly_data)
+        hindcast_df = convertSeriesData2DataFrame(hindcast_hourly_series)
+        saveWeatherData2Csv(hindcast_df, 'flask-d3/data', 'hindcast-hourly-temp.csv')
+        print('\nFetching historical (time-machine) weather data for %s\n(using the DarkSky API)\n' % args.a)
+        print('\nThe following is the data that has been saved:\n',
+              hindcast_df, 'Confirm this is the desired product and \
 make necessary changes to code as needed\n')
 
-        elif args.time_machine and args.time and args.a:
+    else:
 
-            makeSave2Folder('./', 'csv/')
-            print('\nSaving Time Machine %s weather data for %s (from %s) in the \'csv/\' directory!\n' % ('temperature', args.a, args.time))
-            time_machine_request = dsky.getTimeMachineDataFromDarkSkyAPI(args.a, args.time)
-            past_data = time_machine_request.json()
-            past_hourly = past_data['hourly']['data']
-            past_series = getTimeMachineHourlyTemperatureSeries(past_hourly)
-            saveWeatherData2Csv(past_series, 'csv', 'past-hourly-temp.csv')
-            print('\nFetching time-machine weather data for %s (from %s to %s midnight)\n' % \
-                  (args.a, dsky.parseDateString2DateTimeObj(args.time), dt.date.today()))
-            print('\nThe following is the data that has been saved:\n\n',
-                  past_series, '\nConfirm this is the desired product and \
-make necessary changes to code as needed\n')
-
-        else:
-
-            print('\nYou need to enter \'--forecast\' for forecast data or \
+        print('\nYou need to enter \'--forecast\' for forecast data or \
 \'--time_machine\'\n\
 for historical hind-cast data, and location (i.e. \'Vancouver\') to \n\
 save the data to \'csv/\'.\n')
