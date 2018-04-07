@@ -55,7 +55,14 @@ def getForeacastTemperatureD3():
     the data to ./templates/forecast_temperature.html, in which the data will
     be rendered by D3.
     '''
-    return render_template('forecast_temperature.html')
+    path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
+    fname = 'forecast-hourly-temp'
+    fname_fmt = '.csv'
+    df = pd.read_csv(path2Data + fname + fname_fmt)
+    forecast_data = df.to_dict(orient = 'records')
+    forecast_data = json.dumps(forecast_data, indent = 2)
+    data = { 'forecast_data': forecast_data }
+    return render_template('forecast_temperature.html', data = data)
 
 @app.route('/hindcast')
 def getHistoricalHindcastTemperatureD3():
@@ -71,7 +78,7 @@ def getForecastAndHindcastTemperatureD3():
     '''
     Function to call when fetching the index endpoint.
     '''
-    # path2data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
+    # path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
     # fname = 'data.csv'
     # df = pd.read_csv(path2data + fname, sep = ',')
     # temp_data = df.to_dict(orient = 'records')
