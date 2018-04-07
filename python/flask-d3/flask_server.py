@@ -72,7 +72,7 @@ def getHistoricalHindcastTemperatureD3():
     be rendered by D3.
     '''
     path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
-    fname = 'hindcast-hourly-data'
+    fname = 'hindcast-hourly-temp'
     fname_fmt = '.csv'
     df = pd.read_csv(path2Data + fname + fname_fmt)
     hindcast_data = df.to_dict(orient = 'records')
