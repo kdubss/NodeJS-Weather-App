@@ -11,6 +11,8 @@ from flask import Flask, render_template
 sys.path.insert(0, '../')
 import api_requests as api
 
+from local_settings import env
+
 app = Flask(__name__)
 
 @app.errorhandler(404)
@@ -48,14 +50,22 @@ def getTestPage():
     '''
     import api_requests as api
     import weather as w
+
+    # > Fetching & Organization of data from API:
     forecast_request = api.getForecastDataFromDarkSkyAPI('Vancouver')
     forecast_json = forecast_request.json()
     forecast_hourly_data = forecast_json['hourly']['data']
     forecast_series = w.getForecastHourlyTemperatureSeries(forecast_hourly_data)
     forecast_df = w.convertSeriesData2DataFrame(forecast_series)
     w.saveWeatherData2Csv(forecast_df, 'data', 'forecast-hourly-temp-test.csv')
-    summary = forecast_hourly_data[0]['summary']
-    return 'The current condition is %s' % summary
+
+    # > Loading the data & passing it to html template:
+    fname = 'forecast-hourly-temp-test.csv'
+    df = pd.read_csv(env['path2data'] + fname)
+    forecast_data = df.to_dict(orient = 'records')
+    forecaset_data = json.dumps(forecast_data, indent = 2)
+    data = { 'forecast_data' : forecast_data }
+    return render_template('forecast_temperature.html', data = data)
 
 @app.route('/')
 def getIndexPage():
