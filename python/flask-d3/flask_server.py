@@ -150,6 +150,14 @@ def getForecastAndHindcastTemperatureD3():
     forecast_request = api.getForecastDataFromDarkSkyAPI('Vancouver')
     hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver', str(dt.datetime.today()))
 
+    forecast_hourly_data = forecast_request.json()['hourly']['data']
+    forecast_series = w.getForecastHourlyTemperatureSeries(forecast_hourly_data)
+    hindcast_hourly_data = hindcast_request.json()['hourly']['data']
+    hindcast_series = w.getTimeMachineHourlyTemperatureSeries(hindcast_hourly_data)
+
+    df = w.combineForecastAndTimemachineSeries2DfAndSave(forecast_series, hindcast_series)
+    df.to_csv('data/combined-temp-data.csv', index = False)
+
     # path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
     # fname = 'data.csv'
     # df = pd.read_csv(path2data + fname, sep = ',')
