@@ -169,6 +169,19 @@ def getDataframeFromSeriesData(forecast_series, time_machine_series):
     temp_df['date'] = date_col
     return temp_df
 
+def fetchAndPrepareForecastData4Vancouver4D3Render():
+    '''
+    Helper function to 1. fetch, 2. parse / prepare, and 3. save the forecast
+    weather data from the DarkSky API to the 'path2data' path from the local env.
+    '''
+    address = 'Vancouver'
+    forecast_request = dsky.getForecastDataFromDarkSkyAPI(address)
+    forecast_json = forecast_request.json()
+    forecast_hourly_data = forecast_json()['hourly']['data']
+    forecast_series = getForecastHourlyTemperatureSeries(forecast_hourly_data)
+    forecast_df = convertSeriesData2DataFrame(forecast_series)
+    saveWeatherData2Csv(forecast_df, 'data', 'forecast-hourly-temp-test.csv')
+
 def makeSave2Folder(directoy_or_path, dir_name):
     '''
     Function to create a directory (path) in which to save stuff (i.e. data, figs)
