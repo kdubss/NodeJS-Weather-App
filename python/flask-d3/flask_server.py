@@ -142,6 +142,14 @@ def getForecastAndHindcastTemperatureD3():
     '''
     Function to call when fetching the index endpoint.
     '''
+    import datetime as dt
+
+    import api_requests as api
+    import weather as w
+
+    forecast_request = api.getForecastDataFromDarkSkyAPI('Vancouver')
+    hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver', str(dt.datetime.today()))
+
     # path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
     # fname = 'data.csv'
     # df = pd.read_csv(path2data + fname, sep = ',')
