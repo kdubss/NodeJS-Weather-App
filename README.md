@@ -1,4 +1,4 @@
-# Weather-App: Node.js, Python/Pandas, D3.js, (React.js)
+# Weather-App: `JavaScript`, `Python/Pandas`, `D3.js`, (`React.js`)
 
 ## <a id='toc'>Table Of Contents</a>
 
@@ -78,7 +78,6 @@
     - __`/temperature`__: Renders the temperature data for *both* the __forecast__ and __time-machine__ requests to the DarkSky API. *Currently, there are some problems encoutered with this end-point (refer to the [question posted on stackoverflow](https://stackoverflow.com/questions/49699408/how-do-i-deal-with-occurrences-of-nan-in-d3?noredirect=1#comment86413836_49699408)), which I'm currently attempting to solve*.
     - __`/forecast`__: Renders the static `D3` `HTML` page, producing a figure of the temperature data returned from a __forecast__ request to the DarkSky API.
 
-
 [Back 2 ToC](#toc) &#128070;
 
 ## <a id='d3'>D3.js charts</a>
@@ -103,16 +102,22 @@
 
   - From the figure above,
     - Since the data was not rendering properly (despite being successfully passed from server to html), I hard-coded the data into the HTML page to produce this figure. *I'll have to explore the code and read up more, on `D3` to hopefully solve the issue*.
+    - __Update__: <u>This has now been solved (*see figure below*)</u>.
+![solved](https://github.com/kdubss/NodeJS-Weather-App/blob/master/imgs/combined-temps.png)
 
 ![forecast](https://github.com/kdubss/NodeJS-Weather-App/blob/feature/d3/imgs/forecast.png)
 
   - The weather temperature data returned from the __forecast__ request.
-  - Forecast time range spans from *<u>2018-04-06 17:00:00</u> to <u>2018-04-08 17:00:00</u>*
+
+
 
 ![hindcast](https://github.com/kdubss/NodeJS-Weather-App/blob/feature/d3/imgs/hindcast.png)
 
+
   - The weather temperature data returned from the __time-machine__ request.
-  - Hindcast time range spans from *<u>2018-04-05 00:00:00 to 2018-04-05 23:00:00</u>*
+
+
+[Back 2 ToC](#toc) &#128070;
 
 ## <a id='data'>Data Parameters</a> (found at *[forecast.io](https://darksky.net)*) - Hourly Data
 (for full details on request response formats, see [here](https://darksky.net/dev/docs#response-format))
