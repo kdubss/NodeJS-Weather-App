@@ -8,6 +8,7 @@ import os
 import argparse as ag
 import datetime as dt
 import pandas as pd
+import numpy as np
 
 from dateutil.parser import parse
 
@@ -142,7 +143,7 @@ def convertSeriesData2DataFrame(series_data):
     df.columns = ['date', 'temp']
     return df
 
-def getDataframeFromSeriesData(forecast_series, time_machine_series):
+def combineForecastAndTimemachineSeries2DfAndSave(forecast_series, time_machine_series):
     '''
     Function to create a Pandas.core.frame.DataFrame object from two
     Pandas.core.series.Series data objects.
@@ -163,10 +164,12 @@ def getDataframeFromSeriesData(forecast_series, time_machine_series):
         [forecast_series, time_machine_series],
         axis = 1
     )
-    temp_df.columns = ['forecast', 'hindcast']
-    temp_df = temp_df[temp_df.forecast != temp_df.hindcast]
     date_col = temp_df.index
     temp_df['date'] = date_col
+    temp_df.columns = ['forecast', 'hindcast', 'date']
+    for ind1, ind2 in zip(temp_df.forecast.index, temp_df.hindcast.index):
+        if temp_df.forecast[ind1] == temp_df.hindcast[ind2]:
+            temp_df.forecast[ind1] = np.nan
     return temp_df
 
 def makeSave2Folder(directoy_or_path, dir_name):
