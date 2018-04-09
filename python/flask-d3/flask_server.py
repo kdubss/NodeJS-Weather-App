@@ -120,6 +120,7 @@ def getHistoricalHindcastTemperatureD3():
     import weather as w
     import datetime as dt
 
+    # > Fetching & Organization of data from API:
     hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver',
                                                             str(dt.datetime.today() - dt.timedelta(1)))
     hindcast_json = hindcast_request.json()
@@ -128,6 +129,7 @@ def getHistoricalHindcastTemperatureD3():
     hindcast_df = w.convertSeriesData2DataFrame(hindcast_series)
     w.saveWeatherData2Csv(hindcast_df, 'data', 'hindcast-hourly-temp.csv')
 
+    # > Passing data 2 D3.html
     path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
     fname = 'hindcast-hourly-temp'
     fname_fmt = '.csv'
