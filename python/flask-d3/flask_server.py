@@ -120,16 +120,14 @@ def getHistoricalHindcastTemperatureD3():
     import weather as w
     import datetime as dt
 
-    # > Fetching & Organization of data from API:
     hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver',
-                                                            str(dt.datetime.today()))
+                                                            str(dt.datetime.today() - dt.timedelta(1)))
     hindcast_json = hindcast_request.json()
     hindcast_hourly_data = hindcast_json['hourly']['data']
     hindcast_series = w.getTimeMachineHourlyTemperatureSeries(hindcast_hourly_data)
     hindcast_df = w.convertSeriesData2DataFrame(hindcast_series)
     w.saveWeatherData2Csv(hindcast_df, 'data', 'hindcast-hourly-temp.csv')
 
-    # > Passing data 2 D3.html
     path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
     fname = 'hindcast-hourly-temp'
     fname_fmt = '.csv'
@@ -144,6 +142,22 @@ def getForecastAndHindcastTemperatureD3():
     '''
     Function to call when fetching the index endpoint.
     '''
+    import datetime as dt
+
+    import api_requests as api
+    import weather as w
+
+    forecast_request = api.getForecastDataFromDarkSkyAPI('Vancouver')
+    hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver', str(dt.datetime.today()))
+
+    forecast_hourly_data = forecast_request.json()['hourly']['data']
+    forecast_series = w.getForecastHourlyTemperatureSeries(forecast_hourly_data)
+    hindcast_hourly_data = hindcast_request.json()['hourly']['data']
+    hindcast_series = w.getTimeMachineHourlyTemperatureSeries(hindcast_hourly_data)
+
+    df = w.combineForecastAndTimemachineSeries2DfAndSave(forecast_series, hindcast_series)
+    df.to_csv('data/combined-temp-data.csv', index = False)
+
     # path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
     # fname = 'data.csv'
     # df = pd.read_csv(path2data + fname, sep = ',')
