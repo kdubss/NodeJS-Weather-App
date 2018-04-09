@@ -41,6 +41,22 @@ def serverError(err):
         '''
     )
 
+@app.route('/test')
+def getTestPage():
+    '''
+    Route for testing purposes.
+    '''
+    import api_requests as api
+    import weather as w
+    forecast_request = api.getForecastDataFromDarkSkyAPI('Vancouver')
+    forecast_json = forecast_request.json()
+    forecast_hourly_data = forecast_json['hourly']['data']
+    forecast_series = w.getForecastHourlyTemperatureSeries(forecast_hourly_data)
+    forecast_df = w.convertSeriesData2DataFrame(forecast_series)
+    w.saveWeatherData2Csv(forecast_df, 'data', 'forecast-hourly-temp-test.csv')
+    summary = forecast_hourly_data[0]['summary']
+    return 'The current condition is %s' % summary
+
 @app.route('/')
 def getIndexPage():
     '''
