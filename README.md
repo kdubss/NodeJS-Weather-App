@@ -102,8 +102,12 @@
 
   - From the figure above,
     - Since the data was not rendering properly (despite being successfully passed from server to html), I hard-coded the data into the HTML page to produce this figure. *I'll have to explore the code and read up more, on `D3` to hopefully solve the issue*.
+
     - __Update__: <u>This has now been solved (*see figure below*)</u>.
+
 ![solved](https://github.com/kdubss/NodeJS-Weather-App/blob/master/imgs/combined-temps.png)
+
+  - The issue was in the differences between the y-axis scaling between the historical and frecasted data.  When integer values were input instead of `D3` calls to the data, the time series properly rendered!
 
 ![forecast](https://github.com/kdubss/NodeJS-Weather-App/blob/feature/d3/imgs/forecast.png)
 
