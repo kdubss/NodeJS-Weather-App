@@ -24,7 +24,15 @@
   #### Still to do:
   __1.__ Revise the `D3` code to be more modular
       - Also, fix research and fix the `D3` to render the temperature data returned from both the __forecast__ and __time-machine__ requests.
-  __2.__ Refactor the `flask_server.py` script such that all the data fetching/parsing will be done with requests to particular *end-points*.
+
+  - The __`D3`__ rendered figure for the __`/hindcast`__ end-point is missing both the y-axis and x-axis bars.
+  - __First__, this issue needs to be resolved.
+  - __Then__, the multi-line (time-machine & forecast requests) __`D3`__ rendered figure will have to be resolved.
+
+
+  __2.__ Refactor the `flask_server.py` script such that all the data fetching/parsing will be done with requests to particular *end-points*. <u>__This has now been resolved__</u>!
+
+
   __3.__ Start constructing the front-end
       - I'd like to construct data-panels which allows the client to view weather time-series' for a variety of weather parameters, etc.
       - There is also the possibility of doing the above using `React.js`.
