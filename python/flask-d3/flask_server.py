@@ -122,7 +122,7 @@ def getHistoricalHindcastTemperatureD3():
 
     # > Fetching & Organization of data from API:
     hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver',
-                                                            str(dt.datetime.today() - dt.timedelta(1)))
+                                                            str(dt.datetime.today()))
     hindcast_json = hindcast_request.json()
     hindcast_hourly_data = hindcast_json['hourly']['data']
     hindcast_series = w.getTimeMachineHourlyTemperatureSeries(hindcast_hourly_data)
