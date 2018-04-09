@@ -10,13 +10,13 @@
         font: 12px Arial;
       }
       path {
-        stroke-width: 2;
+        stroke-width: 3;
         fill: none;
       }
       .axis path, .axis line {
         fill: none;
         stroke: steelblue;
-        stroke-width: 2;
+        stroke-width: 1;
         shape-rendering: crispEdges;
       }
     </style>
@@ -26,16 +26,11 @@
 
     <h1>Testing multi-line with D3</h1>
     <hr>
-    <p>Unfortunately, there were some complications in constructing a figure
-      with both <i>forecast</i> and <i>time-machine</i> request, weather data
-      onto the <code>HTML</code> page.</p>
-    <p>Although the data was being successfully passed from the Flask server to
-      the <code>html</code> page, there data itself was not rendering properly
-      on my machine...</p>
-    <p>For full details of the issue, see the question posted on
-      <a href='https://stackoverflow.com/questions/49699408/how-do-i-deal-with-occurrences-of-nan-in-d3?noredirect=1#comment86413836_49699408'>
-        stackoverflow</a>.</p>
-
+    <ul>
+        <li><b>Historical</b> temperature: dashed blue line</li>
+        <li><b>Forecasted</b> temperature: solid green line</li>
+    </ul>
+    <small><a href='/'>Back to index</a></small>
     <div id='graphDiv'></div>
 
     <script type='text/javascript' src='https://d3js.org/d3.v3.min.js'></script>
@@ -43,7 +38,6 @@
 
       // Loading data passed from flask server:
       const graphData = {{ data.temp_data | safe }}
-      console.log(graphData);
 
       // Set dimensions of SVG object:
       const margin = { top: 30, right: 50, bottom: 30, left: 50 };
