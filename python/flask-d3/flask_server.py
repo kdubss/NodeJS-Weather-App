@@ -88,6 +88,18 @@ def getForeacastTemperatureD3():
     the data to ./templates/forecast_temperature.html, in which the data will
     be rendered by D3.
     '''
+    import api_requests as api
+    import weather as w
+
+    # > Fetching & Organization of data from API:
+    forecast_request = api.getForecastDataFromDarkSkyAPI('Vancouver')
+    forecast_json = forecast_request.json()
+    forecast_hourly_data = forecast_json['hourly']['data']
+    forecast_series = w.getForecastHourlyTemperatureSeries(forecast_hourly_data)
+    forecast_df = w.convertSeriesData2DataFrame(forecast_series)
+    w.saveWeatherData2Csv(forecast_df, 'data', 'forecast-hourly-temp.csv')
+
+    # > Passing data 2 D3.html
     path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
     fname = 'forecast-hourly-temp'
     fname_fmt = '.csv'
@@ -104,6 +116,18 @@ def getHistoricalHindcastTemperatureD3():
     the data to ./templates/historical_temperature.html, in which the data will
     be rendered by D3.
     '''
+    import api_requests as api
+    import weather as w
+    import datetime as dt
+
+    hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver',
+                                                            str(dt.datetime.today() - dt.timedelta(1)))
+    hindcast_json = hindcast_request.json()
+    hindcast_hourly_data = hindcast_json['hourly']['data']
+    hindcast_series = w.getTimeMachineHourlyTemperatureSeries(hindcast_hourly_data)
+    hindcast_df = w.convertSeriesData2DataFrame(hindcast_series)
+    w.saveWeatherData2Csv(hindcast_df, 'data', 'hindcast-hourly-temp.csv')
+
     path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
     fname = 'hindcast-hourly-temp'
     fname_fmt = '.csv'
