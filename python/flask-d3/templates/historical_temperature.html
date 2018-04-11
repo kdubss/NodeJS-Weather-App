@@ -80,10 +80,7 @@
 
         // Scaling the range of the data being plotted:
         x.domain(d3.extent(data, (d) => { return d.date; }));
-        y.domain([
-          d3.min(data, (d) => { return Math.min(d.temp) }),
-          d3.max(data, (d) => { return Math.max(d.temp) })
-        ]);
+        y.domain([0, 20]);
 
         // Adding Hindcast Temp Path:
         svg.append('path')

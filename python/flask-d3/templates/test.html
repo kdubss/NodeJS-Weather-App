@@ -91,14 +91,7 @@
 
         // Scale the data's range:
         x.domain(d3.extent(data, (d) => { return d.date; }));
-        y.domain([
-          d3.min(data, (d) => {
-            return 7;
-          }),
-          d3.max(data, (d) => {
-            return 18
-          })
-        ]);
+        y.domain([0, 20]);
 
         // Adding the X-Axis:
         svg.append('g')
