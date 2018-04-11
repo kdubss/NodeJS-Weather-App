@@ -10,43 +10,34 @@
         font: 12px Arial;
       }
       path {
-        stroke-width: 2;
+        stroke-width: 3;
         fill: none;
       }
       .axis path, .axis line {
         fill: none;
         stroke: steelblue;
-        stroke-width: 2;
+        stroke-width: 1;
         shape-rendering: crispEdges;
-      }
-      .area {
-        fill: #F0F8FF;
-        stroke-width: 0;
       }
     </style>
   </head>
 
   <body>
 
-    <h1>Testing multi-line with D3</h1>
+    <h1>Forecasted & Historical Temperature Data</h1>
     <hr>
-    <p>Unfortunately, there were some complications in constructing a figure
-      with both <i>forecast</i> and <i>time-machine</i> request, weather data
-      onto the <code>HTML</code> page.</p>
-    <p>Although the data was being successfully passed from the Flask server to
-      the <code>html</code> page, there data itself was not rendering properly
-      on my machine...</p>
-    <p>For full details of the issue, see the question posted on
-      <a href='https://stackoverflow.com/questions/49699408/how-do-i-deal-with-occurrences-of-nan-in-d3?noredirect=1#comment86413836_49699408'>
-        stackoverflow</a>.</p>
-
+    <ul>
+        <li><b>Historical</b> temperature: dashed blue line</li>
+        <li><b>Forecasted</b> temperature: solid green line</li>
+    </ul>
+    <small><a href='/'>Back to index</a></small>
     <div id='graphDiv'></div>
 
     <script type='text/javascript' src='https://d3js.org/d3.v3.min.js'></script>
     <script>
 
       // Loading data passed from flask server:
-      
+      const graphData = {{ data.temp_data | safe }}
 
       // Set dimensions of SVG object:
       const margin = { top: 30, right: 50, bottom: 30, left: 50 };
@@ -72,15 +63,15 @@
 
       // Defining the Forecast temperature data:
       const forecastLine = d3.svg.line()
-	        .defined( function(d) { return d.forecast; })
+	        .defined((d) => { return d.forecast; })
             .x((d) => { return x(d.date); })
             .y((d) => { return y(d.forecast); });
 
       // Defining the historical Hindcast temperature data:
       const hindcastLine = d3.svg.line()
-			.defined( function(d) { return d.hindcast; })
+      		.defined((d) => { return d.hindcast; })
             .x((d) => { return x(d.date); })
-			.y((d) => { return y(d.hindcast); })
+            .y((d) => { return y(d.hindcast); })
 
       // Adding the SVG canvas:
       const svg = d3.select('#graphDiv')
@@ -95,18 +86,12 @@
         data.forEach((d) => {
           d.date = parseDate(d.date);
           d.forecast = +d.forecast;
+          d.hindcast = +d.hindcast;
         });
 
         // Scale the data's range:
         x.domain(d3.extent(data, (d) => { return d.date; }));
-        y.domain([
-          d3.min(data, (d) => {
-            return Math.min(d.forecast, d.hindcast);
-          }),
-          d3.max(data, (d) => {
-            return Math.max(d.forecast, d.hindcast)
-          })
-        ]);
+        y.domain([0, 20]);
 
         // Adding the X-Axis:
         svg.append('g')
@@ -126,6 +111,7 @@
           .style('fill', 'none')
           .attr('class', 'line')
           .attr('d', forecastLine(data));
+
         // b. Hindcast (historical) data:
         svg.append('path')
           .style('stroke', 'steelblue')

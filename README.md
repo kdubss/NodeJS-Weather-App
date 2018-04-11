@@ -1,12 +1,60 @@
-# Weather-App: Node.js, Python/Pandas, D3.js, (React.js)
+# Weather-App: `JavaScript`, `Python/Pandas`, `D3.js`, (`React.js`)
 
-## Description
+## <a id='toc'>Table Of Contents</a>
 
+  1. [Description](#description)
+  2. [CLI-Tool](#cli-tool)</a>
+  3. [Web-App](#webapp)</a>
+  4. [API-Requests](#api)</a>
+  5. [Flask-Server](#flask-server)
+  6. [D3.js](#d3)
+  7. [Weather Data Parameters](#data)
+
+## <a id='description'>Description</a>
   *A CLI weather-tool / (app) which fetches a lat/lon coordinates of user-input address (postal codes, zip codes, cities, etc.), from the Google maps API, and uses those coordinates to fetch the past, current, and forecasted weather data from the forecast.io (darksky.net) API (requires an API-key).  Currently, this only functions as a CLI (command-line-interface) tool, where functionality is run by `Node.js` (e.g. `$node app.js -a [address]`) based on the user-input address*.
 
   *The* ***goal*** *of this project is to ultimately use `React.js` to create the font-end of an on-line app where* ***current***, ***hourly***, *and* ***minutely*** *weather data will be displayed, both visually as time-series figures and as data tables, depending on the input-address from the user.  Visual representation will be presented by using `D3.js`; Back-end will be powered by `Node.js` (currently, to __<u>test out and learn the `D3.js` library</u>__, the __back-end server will be powered by `Python`__); Data fetching, parsing, and manipulations will be done so using `Python/Pandas`*.
 
-## API requests
+[Back 2 ToC](#toc) &#128070;
+
+### 1. <a id='cli-tool'>Command-Line-Tool</a> (written in `JavaScript`)
+  *The CLI tool is a quick way of fetching the current weather conditions from the __DarkSky__ API.  Simply call the __`app.js`__ script via. __`node`__ and the __`-a`__ flag to specify a specific address (either a city's name - i.e. Vancouver, or a postal/zip code, or even a country's name) to output the __current weather conditions__ for the specified address.*
+
+![fetch_by_name](https://github.com/kdubss/NodeJS-Weather-App/blob/master/imgs/fetch_by_name.png)
+  - Fetching the current weather by a city's name.
+
+![fetch_by_zip](https://github.com/kdubss/NodeJS-Weather-App/blob/master/imgs/fetch_by_zip.png)
+  - Fetching the current weather by a city's zip-code
+
+![fetch_by_country](https://github.com/kdubss/NodeJS-Weather-App/blob/master/imgs/fetch_by_country.png)
+  - Fetching the current weather by a country's name
+
+  [Back 2 ToC](#toc) &#128070;
+
+### 2. <a id='webapp'>Web-App</a> (work-in-progress; written in `Python/D3.js`)
+  *The __web-app__ is still a work-in-progress, but from the current code there is a currently functional __MVP__ with the current code-base.*
+  *Currently, there are two parts to the MVP.  Firstly, `weather.py` is run, to fetch the weather data from the DarkSky API.  Second, when all the data has been fetched, parsed, and saved, the Flask server passes the data to the static html files that renders the data using `D3`.*
+
+  #### Still to do:
+  __1.__ Revise the `D3` code to be more modular
+      - Also, fix research and fix the `D3` to render the temperature data returned from both the __forecast__ and __time-machine__ requests.
+
+  - The __`D3`__ rendered figure for the __`/hindcast`__ end-point is missing both the y-axis and x-axis bars.
+  - __First__, this issue needs to be resolved.
+  - __Then__, the multi-line (time-machine & forecast requests) __`D3`__ rendered figure will have to be resolved. <u>__This has now been resolved__</u>! (*note the original goal of the project was to produce a time series figure showing both the __historical__ and __forecasted__ temperature data*).
+
+
+  __2.__ Refactor the `flask_server.py` script such that all the data fetching/parsing will be done with requests to particular *end-points*. <u>__This has now been resolved__</u> (*the issue was the differences in the axis limits of both the historical and forecated temperature data - since setting the min/max values of the y-axis was producing different values for both the historical and forecasted temperature data, the `D3` engine just didn't know how to render the data...*)!
+
+
+  __3.__ Start constructing the front-end
+      - I'd like to construct data-panels which allows the client to view weather time-series' for a variety of weather parameters, etc.
+      - There is also the possibility of doing the above using `React.js`.
+          - ...either way, this third step will involve lots more planning and research.
+
+[Back 2 ToC](#toc) &#128070;
+
+## <a id='api'>API requests</a>
 
 ### 1. *Forecast* requests
   - URL: `https://api.darksky.net/forecast/[key]/[latitude],[longitude]`
@@ -16,7 +64,9 @@
   - URL: `https://api.darksky.net/forecast/[api-key]/[latitude],[longitude],[time]`
   - *Request returns the observed or forecast weather conditions for a date in the past or future (FOR THE SAKE OF THIS MVP --> FOCUS ON DATES IN THE PAST)*.
 
-## Flask server
+[Back 2 ToC](#toc) &#128070;
+
+## <a id='flask-server'>Flask server</a>
 
   - To run the Flask server, `cd` into `python/flask-d3/` from the projects' root directory.
   - Once there, run `python flask_server.py` to start the server (on `localhost::8080`)
@@ -26,9 +76,11 @@
         - For example, a listing of temperature parameters links directly to the D3 chart of that weather parameter (<i>i.e.</i> clicking on `Temperature` will take you to a static `html` page for the D3)
     - __`/about`__: Gives a summary of what the project is all about (<i>i.e.</i> what tech stack is used, what API is being used, etc.)
     - __`/temperature`__: Renders the temperature data for *both* the __forecast__ and __time-machine__ requests to the DarkSky API. *Currently, there are some problems encoutered with this end-point (refer to the [question posted on stackoverflow](https://stackoverflow.com/questions/49699408/how-do-i-deal-with-occurrences-of-nan-in-d3?noredirect=1#comment86413836_49699408)), which I'm currently attempting to solve*.
-    - __`/forecast`__: Renders the static `D3` `HTML` page, producing a figure of the temperature data returned from a __forecast__ request to the DarkSky API.  Forecast time spans from __<u>2018-04-06 17:00:00 &#x2192; 2018-04-08 17:00:00</u>__.
+    - __`/forecast`__: Renders the static `D3` `HTML` page, producing a figure of the temperature data returned from a __forecast__ request to the DarkSky API.
 
-## D3.js charts
+[Back 2 ToC](#toc) &#128070;
+
+## <a id='d3'>D3.js charts</a>
 
   - *Work-in-progress*
   - The __goal__ is to generate a figure like the one *below*, but using `D3.js` instead of [matplotlib](matplotlib.org).
@@ -51,17 +103,27 @@
   - From the figure above,
     - Since the data was not rendering properly (despite being successfully passed from server to html), I hard-coded the data into the HTML page to produce this figure. *I'll have to explore the code and read up more, on `D3` to hopefully solve the issue*.
 
+    - __Update__: <u>This has now been solved (*see figure below*)</u>.
+
+![solved](https://github.com/kdubss/NodeJS-Weather-App/blob/master/imgs/combined-temps.png)
+
+  - The issue was in the differences between the y-axis scaling between the historical and frecasted data.  When integer values were input instead of `D3` calls to the data, the time series properly rendered!
+
 ![forecast](https://github.com/kdubss/NodeJS-Weather-App/blob/feature/d3/imgs/forecast.png)
 
   - The weather temperature data returned from the __forecast__ request.
-  - Forecast time range spans from *<u>2018-04-06 17:00:00</u> to <u>2018-04-08 17:00:00</u>*
+
+
 
 ![hindcast](https://github.com/kdubss/NodeJS-Weather-App/blob/feature/d3/imgs/hindcast.png)
 
-  - The weather temperature data returned from the __time-machine__ request.
-  - Hindcast time range spans from *<u>2018-04-05 00:00:00 to 2018-04-05 23:00:00</u>*
 
-### Data Parameters (found at *[forecast.io](https://darksky.net)*) - Hourly Data
+  - The weather temperature data returned from the __time-machine__ request.
+
+
+[Back 2 ToC](#toc) &#128070;
+
+## <a id='data'>Data Parameters</a> (found at *[forecast.io](https://darksky.net)*) - Hourly Data
 (for full details on request response formats, see [here](https://darksky.net/dev/docs#response-format))
 
   - `apparentTemperature`: 'feels like' temp in Farenheit
