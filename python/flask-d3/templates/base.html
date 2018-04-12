@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <meta charset='utf-8'>
+    {% if title %}
+      <title>{{ title }} - Weather (powered by DarkSky API)</title>
+    {% else %}
+      <title>Welcome to Weather (powered by DarkSky API)</title>
+    {% endif %}
+  </head>
+
+  <body>
+    <div>
+      <h1>Weather (powered by DarkSky API)</h1>
+      <a href='/forecast'>Forecast for {{ today }}</a>
+      <a href='/hindcast'>Hindcast for {{ yesterday }}</a>
+    </div>
+    <hr>
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>
