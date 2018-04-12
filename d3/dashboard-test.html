@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <title>D3 Dashboard - Testing</title>
+    <script src="http://d3js.org/d3.v2.js"></script>
+    <style>
+    </style>
+  </head>
+
+  <body>
+
+    <!-- Div for pie-chart -->
+    <div id='pieChart'></div>
+    <div id='barCart'></div>
+    <div id='lineChart'></div>
+
+    <script>
+
+      // > Formatting:
+      const formatAsPercentage = d3.format('%'),
+            formatAsPercentage1Dec = d3.format('0.1%'),
+            formatAsInteger = d3.format('.'),
+            fsec = d3.time.format('%S s'),
+            fmin = d3.time.format('%M m'),
+            fhour = d3.time.format('%H h'),
+            fwee = d3.time.format('%a'),
+            fdat = d3.time.format('%d d'),
+            fmon = d3.time.format('%b');
+
+      // ===  PIE CHART ===
+      const dsPieChart = () => {
+        const dataset = [
+          { category: 'Sam', measure: 0.30 },
+          { category: 'Peter', measure: 0.25 },
+          { category: 'John', measure: 0.15 },
+          { category: 'Rick', measure: 0.05 },
+          { category: 'Lenny', measure: 0.18 },
+          { category: 'Paul', measure: 0.04 },
+          { category: 'Steve', measure: 0.03 }
+        ];
+        const width = 400,
+              height = 400,
+              outerRadius = Math.min(width, height) / 2,
+              innerRadius = outerRadius * 0.999,
+              // For animation purposes:
+              innerRadiusFinal = outerRadius * 0.5,
+              innerRadiusFinal3 = outerRadius * 0.45,
+              color = d3.scal.category20();
+        const vis = d3.select('#pieChart')
+                        .append('svg:svg')
+                        .data([dataset])
+                            .attr('width', width)
+                            .attr('height', height)
+                          .append('svg:g')
+                            .attr('transform', 'translate')
+      };
+    </script>
+  </body>
+</html>
