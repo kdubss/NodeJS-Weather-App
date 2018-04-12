@@ -107,7 +107,11 @@ def getForeacastTemperatureD3():
     forecast_data = df.to_dict(orient = 'records')
     forecast_data = json.dumps(forecast_data, indent = 2)
     data = { 'forecast_data': forecast_data }
-    return render_template('forecast_temperature.html', data = data)
+    return render_template(
+        'forecast_temperature.html',
+        data = data,
+        title = 'Forecast'
+    )
 
 @app.route('/hindcast')
 def getHistoricalHindcastTemperatureD3():
