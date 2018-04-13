@@ -74,7 +74,7 @@ def getIndex():
     return render_template('index.html')
 
 @app.route('/about')
-def getAboutPage():
+def getAbout():
     '''
     Renderin './templates/about.html'
     '''
@@ -167,7 +167,7 @@ def getForecastAndHindcastTemperatureD3():
     temp_data = df.to_dict(orient = 'records')
     temp_data = json.dumps(temp_data, indent = 2)
     data = { 'temp_data': temp_data }
-    
+
     return render_template(
         'forecast-hindcast-temp.html',
         data = data

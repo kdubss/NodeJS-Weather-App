@@ -1,32 +1,8 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <title>Dark Sky Weather</title>
-  </head>
-  <body>
-    <div>
-      <h1>Dark Sky Weather</h1>
-      (<small>See the <a href='https://darksky.net/dev'>dev-docs</a> for API details)
-      <hr>
-      <section>
-        <ul>
-          <li><a href='/about'>About</a></li>
-          <br>
-          <li><b><i>Hourly Weather</i></b>
-            <br>
-            <ol>
-              <li>Parameters,
-                <ul>
-                  <li><a href='/temperature'>Temperature</a></li>
-                  <li><a href='/forecast'>Forecast Temperature</a></li>
-                  <li><a href='/hindcast'>Historical Temperature</a></li>
-                </ul>
-              </li>
-            </ol>
-          </li>
-        </ul>
-      </section>
-    </div>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h1>Hourly Weather: Vancouver British Columbia, Canada</h1>
+  <img style='width: 90%; height: 70%;' src='/static/darksky.jpg'>
+
+{% endblock %}

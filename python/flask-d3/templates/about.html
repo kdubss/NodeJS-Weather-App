@@ -1,29 +1,7 @@
-<!doctype>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <title>DarkSky Weather - About</title>
-  </head>
-  <body>
-    <h1>DarkSky Weather - About</h1>
-    <ul>
-      <li>Web-App to display weather data (via. <code>D3.js</code>)
-      <ul>
-        <li>Weather data accessed and fetched through the <a href='forecast.io'>
-          DarkSky API</a></li>
-        </li>
-        <li>Server built and powered by Python/Flask</li>
-        <li>Weather visulizations constructed <i>via.</i> <code>D3.js</code></li>
-        <li>Visualizations served as static <code>HTML</code> files calling
-          to a dynamic Flask end-point</li>
-      </ul>
-      </li>
-    </ul>
+{% extends 'base.html' %}
 
-    <div>
-      <footer>
-        <a href='/'>Back to Home</a>
-      </footer>
-    </div>
-  </body>
-</html>
+{% block content %}
+
+  <h1>What this is all about</h1>
+
+{% endblock %}
