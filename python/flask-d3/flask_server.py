@@ -172,6 +172,10 @@ def getForecastAndHindcastTemperatureD3():
     data = { 'temp_data': temp_data }
     return render_template('test.html', data = data)
 
+@app.route('/inheritance')
+def getInheritanceTest():
+    return render_template('inheritance-test.html')
+
 if __name__ == '__main__':
 
     app.run(port = 8080, debug = True)
