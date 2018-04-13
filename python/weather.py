@@ -299,6 +299,13 @@ end-point on the Flask server\n' % args.a)
               hindcast_df, 'Confirm this is the desired product and \
 make necessary changes to code as needed\n')
 
+    elif args.a:
+
+        request = dsky.getForecastDataFromDarkSkyAPI(args.a)
+        hourly_data = request.json()['hourly']['data']
+        for each_hr in hourly_data:
+            print(dsky.convertUnixTime2PST(each_hr['time']))
+
     else:
 
         print('\nYou need to enter \'--forecast\' for forecast data or \
