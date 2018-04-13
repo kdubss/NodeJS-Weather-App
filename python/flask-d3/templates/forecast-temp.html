@@ -5,6 +5,9 @@
   <h1>Forecasted & Historical Temperature</h1>
 
   {% block javascript %}
+  <script type='text/javascript' src="http://d3js.org/d3.v3.min.js"></script>
+  <div id='graphDiv'></div>
+
     <script type='text/javascript'>
       {% include './js/forecast-temperature.js' %}
     </script>

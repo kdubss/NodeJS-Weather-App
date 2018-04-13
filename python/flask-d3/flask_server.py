@@ -89,38 +89,26 @@ def getForeacastTemperatureD3():
     the data to ./templates/forecast_temperature.html, in which the data will
     be rendered by D3.
     '''
+    # > Fetching and prepping forecast temperature data:
     forecast_request = api.getForecastDataFromDarkSkyAPI('Vancouver')
     forecast_hourly_data = forecast_request.json()['hourly']['data']
     forecast_hourly_series = w.getForecastHourlyTemperatureSeries(forecast_hourly_data)
-    data = { 'forecast_hourly_data': forecast_hourly_data }
+    forecast_df = w.convertSeriesData2DataFrame(forecast_hourly_series)
+    w.saveWeatherData2Csv(forecast_df, 'data', 'forecast-hourly-temp.csv')
+
+    # > loading and sending forecast temperature data to html template:
+    path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
+    fname = 'forecast-hourly-temp'
+    fname_fmt = '.csv'
+    df = pd.read_csv(path2Data + fname + fname_fmt)
+    forecast_data = df.to_dict(orient = 'records')
+    forecast_data = json.dumps(forecast_data, indent = 2)
+    data = { 'forecast_data': forecast_data }
+
     return render_template(
         'forecast-and-historical-temp.html',
         data = data
     )
-    # import api_requests as api
-    # import weather as w
-    #
-    # # > Fetching & Organization of data from API:
-    # forecast_request = api.getForecastDataFromDarkSkyAPI('Vancouver')
-    # forecast_json = forecast_request.json()
-    # forecast_hourly_data = forecast_json['hourly']['data']
-    # forecast_series = w.getForecastHourlyTemperatureSeries(forecast_hourly_data)
-    # forecast_df = w.convertSeriesData2DataFrame(forecast_series)
-    # w.saveWeatherData2Csv(forecast_df, 'data', 'forecast-hourly-temp.csv')
-    #
-    # # > Passing data 2 D3.html
-    # path2Data = '~/Documents/node-projects/weather-app/python/flask-d3/data/'
-    # fname = 'forecast-hourly-temp'
-    # fname_fmt = '.csv'
-    # df = pd.read_csv(path2Data + fname + fname_fmt)
-    # forecast_data = df.to_dict(orient = 'records')
-    # forecast_data = json.dumps(forecast_data, indent = 2)
-    # data = { 'forecast_data': forecast_data }
-    # return render_template(
-    #     'forecast_temperature.html',
-    #     data = data,
-    #     title = 'Forecast'
-    # )
 
 @app.route('/hindcast')
 def getHistoricalHindcastTemperatureD3():
