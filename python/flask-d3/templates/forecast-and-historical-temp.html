@@ -3,6 +3,11 @@
 {% block content %}
 
   <h1>Forecasted & Historical Temperature</h1>
-  
+
+  {% block javascript %}
+    <script type='text/javascript'>
+      {% include './js/forecast-temperature.js' %}
+    </script>
+  {% endblock %}
 
 {% endblock %}

@@ -10,38 +10,39 @@ from flask import Flask, render_template
 
 sys.path.insert(0, '../')
 import api_requests as api
+import weather as w
 
 from local_settings import env
 
 app = Flask(__name__)
 
-@app.errorhandler(404)
-def pageNotFound(err):
-    '''
-    Handles a 404 client-side error(s).
-    '''
-    return (
-        '''
-        Sorry, 404!
-        This means it's completely YOUR fault (i.e. wrong url, etc.).
-
-        Make sure to get'yo stuff together and do it right!
-        '''
-    )
-
-@app.errorhandler(500)
-def serverError(err):
-    '''
-    Handles a 500 server-side error(s).
-    '''
-    return (
-        '''
-        Okay okay, okay...
-
-        This is our fault...we'll do our best to get our stuff right, so you
-        can get'yo stuff right!
-        '''
-    )
+# @app.errorhandler(404)
+# def pageNotFound(err):
+#     '''
+#     Handles a 404 client-side error(s).
+#     '''
+#     return (
+#         '''
+#         Sorry, 404!
+#         This means it's completely YOUR fault (i.e. wrong url, etc.).
+#
+#         Make sure to get'yo stuff together and do it right!
+#         '''
+#     )
+#
+# @app.errorhandler(500)
+# def serverError(err):
+#     '''
+#     Handles a 500 server-side error(s).
+#     '''
+#     return (
+#         '''
+#         Okay okay, okay...
+#
+#         This is our fault...we'll do our best to get our stuff right, so you
+#         can get'yo stuff right!
+#         '''
+#     )
 
 @app.route('/test')
 def getTestPage():
@@ -88,7 +89,14 @@ def getForeacastTemperatureD3():
     the data to ./templates/forecast_temperature.html, in which the data will
     be rendered by D3.
     '''
-    return render_template('forecast-and-historical-temp.html')
+    forecast_request = api.getForecastDataFromDarkSkyAPI('Vancouver')
+    forecast_hourly_data = forecast_request.json()['hourly']['data']
+    forecast_hourly_series = w.getForecastHourlyTemperatureSeries(forecast_hourly_data)
+    data = { 'forecast_hourly_data': forecast_hourly_data }
+    return render_template(
+        'forecast-and-historical-temp.html',
+        data = data
+    )
     # import api_requests as api
     # import weather as w
     #
