@@ -131,6 +131,7 @@ def getHistoricalHindcastTemperatureD3():
     hindcast_data = df.to_dict(orient = 'records')
     hindcast_data = json.dumps(hindcast_data, indent = 2)
     data = { 'hindcast_data': hindcast_data }
+
     return render_template(
         'hindcast-temp.html',
         data = data,
@@ -166,7 +167,11 @@ def getForecastAndHindcastTemperatureD3():
     temp_data = df.to_dict(orient = 'records')
     temp_data = json.dumps(temp_data, indent = 2)
     data = { 'temp_data': temp_data }
-    return render_template('test.html', data = data)
+    
+    return render_template(
+        'forecast-hindcast-temp.html',
+        data = data
+    )
 
 @app.route('/inheritance')
 def getInheritanceTest():

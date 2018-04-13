@@ -30,7 +30,8 @@
       <h1>Weather (powered by DarkSky API)</h1>
       <a href='{{ url_for("getIndex") }}'>Home</a> |
       <a href='{{ url_for("getForecastTemperatureD3") }}'>Forecast Temperature</a> |
-      <a href='{{ url_for("getHistoricalHindcastTemperatureD3") }}'>Hindcast Temperature</a>
+      <a href='{{ url_for("getHistoricalHindcastTemperatureD3") }}'>Hindcast Temperature</a> |
+      <a href='{{ url_for("getForecastAndHindcastTemperatureD3") }}'>Forecasted & Hindcasted Temperature</a>
     </div>
     <hr>
     {% block content %}
