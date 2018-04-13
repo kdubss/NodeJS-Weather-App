@@ -6,7 +6,7 @@ import pandas as pd
 import sys, os
 import datetime as dt
 
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 
 sys.path.insert(0, '../')
 import api_requests as api
@@ -16,42 +16,39 @@ from local_settings import env
 
 app = Flask(__name__)
 
-# @app.errorhandler(404)
-# def pageNotFound(err):
-#     '''
-#     Handles a 404 client-side error(s).
-#     '''
-#     return (
-#         '''
-#         Sorry, 404!
-#         This means it's completely YOUR fault (i.e. wrong url, etc.).
-#
-#         Make sure to get'yo stuff together and do it right!
-#         '''
-#     )
-#
-# @app.errorhandler(500)
-# def serverError(err):
-#     '''
-#     Handles a 500 server-side error(s).
-#     '''
-#     return (
-#         '''
-#         Okay okay, okay...
-#
-#         This is our fault...we'll do our best to get our stuff right, so you
-#         can get'yo stuff right!
-#         '''
-#     )
+@app.errorhandler(404)
+def pageNotFound(err):
+    '''
+    Handles a 404 client-side error(s).
+    '''
+    return (
+        '''
+        Sorry, 404!
+        This means it's completely YOUR fault (i.e. wrong url, etc.).
+
+        Make sure to get'yo stuff together and do it right!
+        '''
+    )
+
+@app.errorhandler(500)
+def serverError(err):
+    '''
+    Handles a 500 server-side error(s).
+    '''
+    return (
+        '''
+        Okay okay, okay...
+
+        This is our fault...we'll do our best to get our stuff right, so you
+        can get'yo stuff right!
+        '''
+    )
 
 @app.route('/test')
 def getTestPage():
     '''
     Route for testing purposes.
     '''
-    import api_requests as api
-    import weather as w
-
     # > Fetching & Organization of data from API:
     forecast_request = api.getForecastDataFromDarkSkyAPI('Vancouver')
     forecast_json = forecast_request.json()
@@ -69,7 +66,8 @@ def getTestPage():
     return render_template('forecast_temperature.html', data = data)
 
 @app.route('/')
-def getIndexPage():
+@app.route('/index')
+def getIndex():
     '''
     Rendering './templates/index.html'.
     '''
@@ -83,7 +81,7 @@ def getAboutPage():
     return render_template('about.html')
 
 @app.route('/forecast')
-def getForeacastTemperatureD3():
+def getForecastTemperatureD3():
     '''
     Parsing data and rendering the forecasted temperature data, then passing
     the data to ./templates/forecast_temperature.html, in which the data will
@@ -106,8 +104,9 @@ def getForeacastTemperatureD3():
     data = { 'forecast_data': forecast_data }
 
     return render_template(
-        'forecast-and-historical-temp.html',
-        data = data
+        'forecast-temp.html',
+        data = data,
+        title = 'Forecasted Hourly Temp (from %s on)' % str(dt.datetime.today())
     )
 
 @app.route('/hindcast')
@@ -117,10 +116,6 @@ def getHistoricalHindcastTemperatureD3():
     the data to ./templates/historical_temperature.html, in which the data will
     be rendered by D3.
     '''
-    import api_requests as api
-    import weather as w
-    import datetime as dt
-
     hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver',
                                                             str(dt.datetime.today() - dt.timedelta(1)))
     hindcast_json = hindcast_request.json()
@@ -136,7 +131,11 @@ def getHistoricalHindcastTemperatureD3():
     hindcast_data = df.to_dict(orient = 'records')
     hindcast_data = json.dumps(hindcast_data, indent = 2)
     data = { 'hindcast_data': hindcast_data }
-    return render_template('historical_temperature.html', data = data)
+    return render_template(
+        'hindcast-temp.html',
+        data = data,
+        title = 'Historical Hourly Temp (from %s)' % str(dt.datetime.today() - dt.timedelta(1))
+    )
 
 @app.route('/temperature')
 def getForecastAndHindcastTemperatureD3():

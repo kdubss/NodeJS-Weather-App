@@ -3,8 +3,7 @@
     <meta charset='utf-8'>
     {% if title %}
       <title>
-        {{ title }} - Weather (powered by <i><a href='forecast.io'>DarkSky API</a></i>)
-      </title>
+        {{ title }} - Weather (powered by <i><a href='forecast.io'>DarkSky API</a></i>)</title>
     {% else %}
       <title>Welcome to Weather (powered by DarkSky API)</title>
     {% endif %}
@@ -29,8 +28,9 @@
   <body>
     <div>
       <h1>Weather (powered by DarkSky API)</h1>
-      <a href='/forecast'>Forecast for {{ today }}</a>
-      <a href='/hindcast'>Hindcast for {{ yesterday }}</a>
+      <a href='{{ url_for("getIndex") }}'>Home</a> |
+      <a href='{{ url_for("getForecastTemperatureD3") }}'>Forecast Temperature</a> |
+      <a href='{{ url_for("getHistoricalHindcastTemperatureD3") }}'>Hindcast Temperature</a>
     </div>
     <hr>
     {% block content %}

@@ -1,7 +1,7 @@
-// ./weather-app/python/flask-d3/templates/js/forecast-temp.js
+// ./weather-app/python/flask-d3/templates/js/hindcast-temp.js
 
-// > Forecast data passed from server:
-const graphData = {{ data.forecast_data | safe }}
+//  Hindcast data passed from server:
+const graphData = {{ data.hindcast_data | safe }}
 
 // Setting dimenesions of SVG:
 const margin = { top: 30, right: 50, bottom: 30, left: 50 };
@@ -24,18 +24,18 @@ const yAxis = d3.svg.axis().scale(y)
       .orient('left').ticks(5);
 
 // Defining the data paths:
-const forecast = d3.svg.line()
-    .x((d) => { return x(d.date); })
-    .y((d) => { return y(d.temp); });
+const hindcast = d3.svg.line()
+.x((d) => { return x(d.date); })
+.y((d) => { return y(d.temp); });
 
 // Adding the SVG canvas:
 const svg = d3.select('#graphDiv')
-    .append('svg')
-      .attr('width', svgWidth)
-      .attr('height', svgHeight)
-    .append('g')
-      .attr('transform',
-        'translate(' + margin.left + ',' + margin.top + ')');
+.append('svg')
+  .attr('width', svgWidth)
+  .attr('height', svgHeight)
+.append('g')
+  .attr('transform',
+    'translate(' + margin.left + ',' + margin.top + ')');
 
 // Defining plot function:
 const plot = (data) => {
@@ -53,7 +53,7 @@ const plot = (data) => {
     .style('stroke', 'green')
     .style('fill', 'none')
     .attr('class', 'line')
-    .attr('d', forecast(data));
+    .attr('d', hindcast(data));
 
   // Adding X-Axis:
   svg.append('g')
@@ -72,7 +72,7 @@ const plot = (data) => {
     .attr('dy', '0.15px')
     .attr('text-anchor', 'start')
     .style('fill', 'green')
-    .text('Forecast (deg.C)');
+    .text('Hindcast (deg.C)');
 
 };
 
