@@ -301,7 +301,8 @@ make necessary changes to code as needed\n')
 
     elif args.a:
 
-        request = dsky.getForecastDataFromDarkSkyAPI(args.a)
+        forecast_request = dsky.getForecastDataFromDarkSkyAPI(args.a)
+        hindcast_request = dsky.getTimeMachineDataFromDarkSkyAPI(args.a)
         hourly_data = request.json()['hourly']['data']
         for each_hr in hourly_data:
             print(dsky.convertUnixTime2PST(each_hr['time']))

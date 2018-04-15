@@ -1,6 +1,8 @@
-# Weather-App: `JavaScript`, `Python/Pandas`, `D3.js`, (`React.js`)
+kk# Weather-App: `JavaScript`, `Python/Pandas`, `D3.js`, (`React.js`)
 
 ## <a id='toc'>Table Of Contents</a>
+
+[Still to do...](#todostill)
 
   1. [Description](#description)
   2. [CLI-Tool](#cli-tool)</a>
@@ -35,19 +37,23 @@
   *The __web-app__ is still a work-in-progress, but from the current code there is a currently functional __MVP__ with the current code-base.*
   *Currently, there are two parts to the MVP.  Firstly, `weather.py` is run, to fetch the weather data from the DarkSky API.  Second, when all the data has been fetched, parsed, and saved, the Flask server passes the data to the static html files that renders the data using `D3`.*
 
-  #### Still to do:
-  __1.__ Revise the `D3` code to be more modular
-      - Also, fix research and fix the `D3` to render the temperature data returned from both the __forecast__ and __time-machine__ requests.
+  #### <a id='todostill'>Still to do</a>:
+  __1.__ Revise the `D3` code to be more modular &#x2192; __*complete*__
+      - Also, research and fix the `D3` to render the temperature data returned from both the __forecast__ and __time-machine__ requests. &#x2192; __*complete*__ (*the problem was the x/y-axis min/max limits between the two data sets being used, I think...*)
 
   - The __`D3`__ rendered figure for the __`/hindcast`__ end-point is missing both the y-axis and x-axis bars.
-  - __First__, this issue needs to be resolved.
-  - __Then__, the multi-line (time-machine & forecast requests) __`D3`__ rendered figure will have to be resolved. <u>__This has now been resolved__</u>! (*note the original goal of the project was to produce a time series figure showing both the __historical__ and __forecasted__ temperature data*).
+      - __First__, this issue needs to be resolved. &#x2192; __*complete*__
+  - __Then__, the multi-line (time-machine & forecast requests) __`D3`__ rendered figure will have to be resolved. <u>__*complete*__</u>! (*note the original goal of the project was to produce a time series figure showing both the __historical__ and __forecasted__ temperature data*).
 
 
-  __2.__ Refactor the `flask_server.py` script such that all the data fetching/parsing will be done with requests to particular *end-points*. <u>__This has now been resolved__</u> (*the issue was the differences in the axis limits of both the historical and forecated temperature data - since setting the min/max values of the y-axis was producing different values for both the historical and forecasted temperature data, the `D3` engine just didn't know how to render the data...*)!
-
+  __2.__ Refactor the `flask_server.py` script such that all the data fetching/parsing will be done with requests to particular *end-points*. <u>__*complete*__</u>
 
   __3.__ Start constructing the front-end
+      - __Update__:
+          - The idea is to have a single __*Landing Page*__ which will have links to *different weather parameters that will be rendered by `D3`.
+              - The *Landing Page* will have a __search bar__, which will tap into Google Maps' API to auto complete the search when given a query for a city's name (e.g. *Vancouver B.C., Canada*).
+              - With the city's name in hand, a call will be made to the Google Maps API to fetch the lat/lon coordinates of that location.
+              - Given the location, a request can then be routed to the DarkSky API to retrieve the *hourly* weather data for said location.
       - I'd like to construct data-panels which allows the client to view weather time-series' for a variety of weather parameters, etc.
       - There is also the possibility of doing the above using `React.js`.
           - ...either way, this third step will involve lots more planning and research.

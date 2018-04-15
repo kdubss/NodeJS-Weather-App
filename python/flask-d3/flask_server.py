@@ -117,7 +117,7 @@ def getHistoricalHindcastTemperatureD3():
     be rendered by D3.
     '''
     hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver',
-                                                            str(dt.datetime.today() - dt.timedelta(1)))
+                                                            str(dt.datetime.today() - dt.timedelta(2)))
     hindcast_json = hindcast_request.json()
     hindcast_hourly_data = hindcast_json['hourly']['data']
     hindcast_series = w.getTimeMachineHourlyTemperatureSeries(hindcast_hourly_data)
@@ -143,14 +143,9 @@ def getForecastAndHindcastTemperatureD3():
     '''
     Function to call when fetching the index endpoint.
     '''
-    import datetime as dt
-
-    import api_requests as api
-    import weather as w
-
     # > Making requests to API:
     forecast_request = api.getForecastDataFromDarkSkyAPI('Vancouver')
-    hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver', str(dt.datetime.today()))
+    hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver', str(dt.datetime.today() - dt.timedelta(1)))
 
     forecast_hourly_data = forecast_request.json()['hourly']['data']
     forecast_series = w.getForecastHourlyTemperatureSeries(forecast_hourly_data)
