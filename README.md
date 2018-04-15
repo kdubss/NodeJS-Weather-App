@@ -39,8 +39,6 @@
 
   #### <a id='todostill'>Still to do</a>:
   __1.__ Revise the `D3` code to be more modular &#x2192; __*complete*__
-
-
       - Also, research and fix the `D3` to render the temperature data returned from both the __forecast__ and __time-machine__ requests. &#x2192; __*complete*__ (*the problem was the x/y-axis min/max limits between the two data sets being used, I think...*)
 
   - The __`D3`__ rendered figure for the __`/hindcast`__ end-point is missing both the y-axis and x-axis bars.
