@@ -13,7 +13,6 @@ import api_requests as api
 import weather as w
 
 from local_settings import env
-from forms import SearchByCityNameForm
 
 app = Flask(__name__)
 
