@@ -2,13 +2,10 @@
 
 {% block content %}
 
-  <h1>Forecast & Hindcast Temperature Data</h1>
-
   {% block javascript %}
 
     <script type='text/javascript' src="http://d3js.org/d3.v3.min.js"></script>
-    <div id='graphDiv'></div>
-
+    <div id='graphDiv' class='container'></div>
     <script type='text/javascript'>
       {% include './js/forecast-hindcast-temp.js' %}
     </script>

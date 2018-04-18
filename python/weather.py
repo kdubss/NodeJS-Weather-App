@@ -167,9 +167,9 @@ def combineForecastAndTimemachineSeries2DfAndSave(forecast_series, time_machine_
     date_col = temp_df.index
     temp_df['date'] = date_col
     temp_df.columns = ['forecast', 'hindcast', 'date']
-    for ind1, ind2 in zip(temp_df.forecast.index, temp_df.hindcast.index):
-        if temp_df.forecast[ind1] == temp_df.hindcast[ind2]:
-            temp_df.forecast[ind1] = np.nan
+    # for ind1, ind2 in zip(temp_df.forecast.index, temp_df.hindcast.index):
+    #     if temp_df.forecast[ind1] == temp_df.hindcast[ind2]:
+    #         temp_df.forecast[ind2] = np.nan
     return temp_df
 
 def makeSave2Folder(directoy_or_path, dir_name):

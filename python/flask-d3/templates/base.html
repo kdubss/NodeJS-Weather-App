@@ -24,18 +24,9 @@
       }
     </style>
     <!-- Bootstrap V3.3 Templating -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-      crossorigin="anonymous"
-    >
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- Custom CSS styling - to manipulate those from Bootstrap -->
-    <link
-      rel='stylesheet'
-      type='text/css'
-      href='{{ url_for("static", filename="css/style.css") }}'
-    >
+    <link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="css/style.css") }}'>
   </head>
 
   <body>
@@ -51,21 +42,14 @@
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <button
-            type="button"
-            class="navbar-toggle collapsed"
-            data-toggle="collapse"
-            data-target="#bs-example-navbar-collapse-1"
-            aria-expanded="false"
-          >
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <b><a class="navbar-brand" href="#">Vancouver Weather - YVR - Dark Sky API</a></b>
+            <b><a class="navbar-brand" href='{{ url_for("getLandingPage") }}'>Vancouver Weather - YVR - Dark Sky API</a></b>
         </div>
-
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div
           class="collapse navbar-collapse"
@@ -91,7 +75,7 @@
           </ul>
           <form class="navbar-form navbar-left">
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
+              <input type="text" class="form-control" placeholder="Search By City">
             </div>
             <button type="submit" class="btn btn-default">Search</button>
           </form>

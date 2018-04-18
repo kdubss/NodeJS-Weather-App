@@ -1,3 +1,73 @@
+@import url('https://fonts.googleapis.com/css?family=Yantramanav:100');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400');
+
 .navbar {
   background-color: black;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+
+.intro {
+	height: 100%;
+	width: 100%;
+	margin: auto;
+	background: url(../imgs/darksky.jpg);
+	display: table;
+	top: 0;
+	background-size: cover;
+}
+
+.intro .inner {
+	display: table-cell;
+	vertical-align: middle;
+	max-width: none;
+}
+
+.content {
+	max-width: 600px;
+	margin: 0 auto;
+	text-align: center;
+	padding-bottom: 35%;
+}
+
+.content h1 {
+	font-family: 'Yantramanav', sans-serif;
+	font-size: 600%;
+	font-weight: 100;
+	color: #4b5159;
+	line-height: 70%;
+}
+
+.btn {
+	font-family: 'Montserrat', sans-serif;
+	font-size: 135%;
+	font-weight: 400;
+	color: #3a6168;
+	text-transform: uppercase;
+	text-decoration: none;
+	border: solid #3a6168;
+	padding: 10px 20px 10px 20px;
+	border-radius: 9px;
+	transition: all 0.5s;
+}
+
+.btn:hover {
+	color: #CBD;
+	border: solid 2px #CBD;
+}
+
+/*--- Media Queries --*/
+@media screen and (max-width: 900px) {
+
+}
+@media screen and (max-width: 768px) {
+
+}
+@media screen and (max-width: 480px) {
+
 }
