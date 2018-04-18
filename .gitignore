@@ -4,6 +4,7 @@
 local_settings.py
 /csv-files
 *.ropeproject
+*responsive-landing-page
 /d3/js/d3/*
 /duck-typing
 *.csv

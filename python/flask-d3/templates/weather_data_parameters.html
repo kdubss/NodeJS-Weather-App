@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <ol>
+    <li>Hourly Temperature
+      <ul>
+        <li>
+          <a href='{{ url_for("getForecastAndHindcastTemperatureD3") }}'>Forecast & hindcast</a>
+        </li>
+        <li>
+          <a href='{{ url_for("getForecastTemperatureD3") }}'>Forecast only</a>
+        </li>
+        <li>
+          <a href='{{ url_for("getHistoricalHindcastTemperatureD3") }}'>Hindcast only</a>
+        </li>
+      </ul>
+    </li>
+  </ol>
+
+{% endblock %}
