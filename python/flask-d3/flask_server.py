@@ -13,6 +13,7 @@ import api_requests as api
 import weather as w
 
 from local_settings import env
+from forms import SearchByCityNameForm
 
 app = Flask(__name__)
 
@@ -44,7 +45,7 @@ def serverError(err):
         '''
     )
 
-@app.route('/test')
+@app.route('/test1')
 def getTestPage():
     '''
     Route for testing purposes.
@@ -66,6 +67,14 @@ def getTestPage():
     return render_template('forecast_temperature.html', data = data)
 
 @app.route('/')
+def getLandingPage():
+    '''
+    View function to fetch the landing page template.
+    '''
+    return render_template(
+        'landing-page.html',
+    )
+
 @app.route('/index')
 def getIndex():
     '''
@@ -79,6 +88,13 @@ def getAbout():
     Renderin './templates/about.html'
     '''
     return render_template('about.html')
+
+@app.route('/data')
+def getDataParams():
+    '''
+    Rendering the template to get weather data parameters.
+    '''
+    return render_template('weather_data_parameters.html')
 
 @app.route('/forecast')
 def getForecastTemperatureD3():
@@ -117,7 +133,7 @@ def getHistoricalHindcastTemperatureD3():
     be rendered by D3.
     '''
     hindcast_request = api.getTimeMachineDataFromDarkSkyAPI('Vancouver',
-                                                            str(dt.datetime.today() - dt.timedelta(2)))
+                                                            str(dt.datetime.today() - dt.timedelta(1)))
     hindcast_json = hindcast_request.json()
     hindcast_hourly_data = hindcast_json['hourly']['data']
     hindcast_series = w.getTimeMachineHourlyTemperatureSeries(hindcast_hourly_data)
@@ -171,6 +187,11 @@ def getForecastAndHindcastTemperatureD3():
 @app.route('/inheritance')
 def getInheritanceTest():
     return render_template('inheritance-test.html')
+
+@app.route('/test2', methods = ['GET', 'POST'])
+def getFormInput():
+    form = SearchByCityNameForm()
+    return render_template('test.html', title = 'Search By City', form = form)
 
 if __name__ == '__main__':
 
