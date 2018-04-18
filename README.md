@@ -50,10 +50,15 @@
 
   __3.__ Start constructing the front-end
     - __Update__:
-        - The idea is to have a single __*Landing Page*__ which will have links to *different weather parameters that will be rendered by `D3`.
-          - The *Landing Page* will have a __search bar__, which will ta`p into Google Maps' API to auto complete the search when given a query for a city's name (e.g. *Vancouver B.C., Canada*).
-          - With the city's name in hand, a call will be made to the Google Maps API to fetch the lat/lon coordinates of that location.
-          - Given the location, a request can then be routed to the DarkSky API to retrieve the *hourly* weather data for said location.
+      - The Landing Page has now been created and can be seen in the image below.
+      - ![Landing Page](https://github.com/kdubss/NodeJS-Weather-App/blob/master/imgs/landing-page.png)
+
+
+    - __Update__:
+      - The idea is to have a single __*Landing Page*__ which will have links to *different weather parameters that will be rendered by `D3`.
+        - The *Landing Page* will have a __search bar__, which will ta`p into Google Maps' API to auto complete the search when given a query for a city's name (e.g. *Vancouver B.C., Canada*).
+        - With the city's name in hand, a call will be made to the Google Maps API to fetch the lat/lon coordinates of that location.
+        - Given the location, a request can then be routed to the DarkSky API to retrieve the *hourly* weather data for said location.
 
       - I'd like to construct data-panels which allows the client to view weather time-series' for a variety of weather parameters, etc.
       - There is also the possibility of doing the above using `React.js`.
