@@ -23,11 +23,18 @@
         shape-rendering: crispEdges;
       }
     </style>
+    <!-- Bootstrap V3.3 Templating -->
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
       crossorigin="anonymous"
+    >
+    <!-- Custom CSS styling - to manipulate those from Bootstrap -->
+    <link
+      rel='stylesheet'
+      type='text/css'
+      href='{{ url_for("static", filename="css/style.css") }}'
     >
   </head>
 
@@ -68,7 +75,7 @@
             <!-- <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li> -->
             <li><a href='{{ url_for("getIndex") }}'>Home</a></li>
             <li><a href='{{ url_for("getAbout") }}'>About</a></li>
-            <li><a href='#'>Weather Parameters</a></li>
+            <li><a href='{{ url_for("getDataParams") }}'>Weather Parameters</a></li>
             <!-- <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
               <ul class="dropdown-menu">
