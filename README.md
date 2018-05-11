@@ -95,6 +95,7 @@
 ## <a id='d3'>D3.js charts</a>
 
   - *Work-in-progress*
+  - My progress on learning how to implement `D3.js` can be viewed on as an [__Observable notebook__](https://beta.observablehq.com/d/4192813e9c542b46).
   - The __goal__ is to generate a figure like the one *below*, but using `D3.js` instead of [matplotlib](matplotlib.org).
 
 ![Line Chart](https://github.com/kdubss/NodeJS-Weather-App/blob/master/python/figs/test.png)
